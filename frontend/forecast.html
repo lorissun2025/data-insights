@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>销售预测 - 智能数据平台</title>
+    <script src="https://cdn.jsdelivr.net/npm/echarts@5.4.3/dist/echarts.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue@3.3.4/dist/vue.global.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios@1.6.2/dist/axios.min.js"></script>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div id="app">
+        <nav class="navbar">
+            <div class="nav-brand">DATA INSIGHTS</div>
+            <div class="nav-menu">
+                <a class="nav-item" href="dashboard.html">市场洞察</a>
+                <a class="nav-item" href="competitor.html">竞品分析</a>
+                <a class="nav-item active" href="forecast.html">销售预测</a>
+                <a class="nav-item" href="customer.html">客户洞察</a>
+                <a class="nav-item" href="price.html">价格分析</a>
+                <a class="nav-item" href="supply-chain.html">智能供应链</a>
+                <a class="nav-item" href="medical-performance.html">医疗效能</a>
+                <a class="nav-item" href="investment.html">投资情报</a>
+                <a class="nav-item" href="rwa.html">研发支持</a>
+                <a class="nav-item" href="assistant.html">AI助手</a>
+            </div>
+            <div class="nav-user">
+                <span class="user-name">{{ userName }}</span>
+                <button class="logout-btn" @click="logout">退出登录</button>
+            </div>
+        </nav>
+
+        <div class="header">
+            <h1>销售预测</h1>
+            <p>基于AI模型的智能销售预测与趋势分析</p>
+        </div>
+
+        <div class="container">
+            <div v-if="loading" class="loading">数据加载中...</div>
+
+            <div v-else>
+                <div class="chart-card" style="margin-bottom: 24px;">
+                    <h3>销售趋势预测</h3>
+                    <div ref="forecastChart" style="width: 100%; height: 400px;"></div>
+                </div>
+
+                <div class="table-card">
+                    <h3>预测模型准确率对比</h3>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>模型名称</th>
+                                <th>MAPE (%)</th>
+                                <th>RMSE</th>
+                                <th>MAE</th>
+                                <th>推荐度</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr v-for="model in models" :key="model.name">
+                                <td>{{ model.name }}</td>
+                                <td>{{ model.mape }}%</td>
+                                <td>{{ model.rmse.toLocaleString() }}</td>
+                                <td>{{ model.mae.toLocaleString() }}</td>
+                                <td>
+                                    <span class="tag" :class="model.mape < 7 ? 'high' : model.mape < 8 ? 'medium' : 'low'">
+                                        {{ model.mape < 7 ? '推荐' : model.mape < 8 ? '可用' : '一般' }}
+                                    </span>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const { createApp } = Vue;
+        const API_BASE = 'http://localhost:8000';
+
+        createApp({
+            data() {
+                return {
+                    loading: true,
+                    userName: '管理员',
+                    token: localStorage.getItem('token'),
+                    models: [],
+                    forecastData: {}
+                };
+            },
+            mounted() {
+                if (!this.token) {
+                    window.location.href = 'login.html';
+                    return;
+                }
+                this.loadData();
+            },
+            methods: {
+                logout() {
+                    localStorage.removeItem('token');
+                    window.location.href = 'login.html';
+                },
+                async loadData() {
+                    try {
+                        const [forecastRes, accuracyRes] = await Promise.all([
+                            axios.get(`${API_BASE}/api/forecast/trend`, {
+                                headers: { Authorization: `Bearer ${this.token}` }
+                            }),
+                            axios.get(`${API_BASE}/api/forecast/accuracy`, {
+                                headers: { Authorization: `Bearer ${this.token}` }
+                            })
+                        ]);
+
+                        this.forecastData = forecastRes.data;
+                        this.models = accuracyRes.data.models;
+
+                        this.loading = false;
+                        this.$nextTick(() => {
+                            this.renderForecastChart();
+                        });
+                    } catch (error) {
+                        console.error(error);
+                        if (error.response?.status === 401) this.logout();
+                    }
+                },
+                renderForecastChart() {
+                    const chart = echarts.init(this.$refs.forecastChart);
+                    const data = this.forecastData;
+
+                    const option = {
+                        tooltip: {
+                            trigger: 'axis',
+                            backgroundColor: 'rgba(15, 23, 42, 0.95)',
+                            borderColor: 'rgba(99, 102, 241, 0.3)',
+                            textStyle: { color: '#e2e8f0' }
+                        },
+                        legend: {
+                            data: ['实际销售', '预测销售', '置信区间'],
+                            top: 10,
+                            textStyle: { color: '#94a3b8' }
+                        },
+                        grid: {
+                            left: '3%',
+                            right: '4%',
+                            bottom: '3%',
+                            containLabel: true
+                        },
+                        xAxis: {
+                            type: 'category',
+                            data: data.months,
+                            axisLine: { lineStyle: { color: 'rgba(99, 102, 241, 0.3)' } },
+                            axisLabel: { color: '#94a3b8', rotate: 45 }
+                        },
+                        yAxis: {
+                            type: 'value',
+                            name: '销售额(万元)',
+                            nameTextStyle: { color: '#94a3b8' },
+                            axisLine: { lineStyle: { color: 'rgba(99, 102, 241, 0.3)' } },
+                            axisLabel: { color: '#94a3b8' },
+                            splitLine: { lineStyle: { color: 'rgba(99, 102, 241, 0.1)' } }
+                        },
+                        series: [
+                            {
+                                name: '实际销售',
+                                type: 'line',
+                                data: data.actual,
+                                smooth: true,
+                                itemStyle: { color: '#3b82f6' },
+                                areaStyle: {
+                                    color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+                                        { offset: 0, color: 'rgba(59, 130, 246, 0.3)' },
+                                        { offset: 1, color: 'rgba(59, 130, 246, 0.05)' }
+                                    ])
+                                }
+                            },
+                            {
+                                name: '预测销售',
+                                type: 'line',
+                                data: data.forecast,
+                                smooth: true,
+                                lineStyle: { type: 'dashed', color: '#fbbf24' },
+                                itemStyle: { color: '#fbbf24' }
+                            },
+                            {
+                                name: '置信区间',
+                                type: 'line',
+                                data: data.upper_bound,
+                                lineStyle: { opacity: 0 },
+                                areaStyle: {
+                                    color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+                                        { offset: 0, color: 'rgba(251, 191, 36, 0.1)' },
+                                        { offset: 1, color: 'rgba(251, 191, 36, 0.02)' }
+                                    ])
+                                },
+                                stack: 'confidence'
+                            }
+                        ]
+                    };
+                    chart.setOption(option);
+                    window.addEventListener('resize', () => chart.resize());
+                }
+            }
+        }).mount('#app');
+    </script>
+</body>
+</html>

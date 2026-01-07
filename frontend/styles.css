@@ -1,0 +1,463 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+    background: #0a0e27;
+    background-image:
+        radial-gradient(ellipse at top, rgba(59, 130, 246, 0.1) 0%, transparent 50%),
+        radial-gradient(ellipse at bottom, rgba(139, 92, 246, 0.08) 0%, transparent 50%);
+    color: #e2e8f0;
+    min-height: 100vh;
+}
+
+.navbar {
+    background: rgba(15, 23, 42, 0.8);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid rgba(99, 102, 241, 0.2);
+    padding: 16px 24px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+
+.nav-brand {
+    font-size: 22px;
+    font-weight: 700;
+    background: linear-gradient(135deg, #60a5fa 0%, #a78bfa 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.nav-menu {
+    display: flex;
+    gap: 8px;
+}
+
+.nav-item {
+    padding: 8px 16px;
+    color: #94a3b8;
+    text-decoration: none;
+    border-radius: 6px;
+    font-size: 14px;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+
+.nav-item:hover {
+    background: rgba(59, 130, 246, 0.1);
+    color: #e2e8f0;
+}
+
+.nav-item.active {
+    background: rgba(59, 130, 246, 0.15);
+    color: #60a5fa;
+}
+
+.nav-user {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.user-name {
+    font-size: 14px;
+    color: #cbd5e1;
+}
+
+.logout-btn {
+    padding: 6px 14px;
+    background: rgba(239, 68, 68, 0.15);
+    border: 1px solid rgba(239, 68, 68, 0.3);
+    border-radius: 6px;
+    color: #f87171;
+    font-size: 13px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.logout-btn:hover {
+    background: rgba(239, 68, 68, 0.25);
+}
+
+.header {
+    background: linear-gradient(135deg, rgba(59, 130, 246, 0.15) 0%, rgba(139, 92, 246, 0.15) 100%);
+    border-bottom: 1px solid rgba(99, 102, 241, 0.3);
+    color: white;
+    padding: 24px 32px;
+}
+
+.header h1 {
+    font-size: 26px;
+    margin-bottom: 8px;
+    background: linear-gradient(135deg, #60a5fa 0%, #a78bfa 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+}
+
+.header p {
+    font-size: 14px;
+    color: #94a3b8;
+    font-weight: 300;
+}
+
+.container {
+    padding: 28px;
+    max-width: 1600px;
+    margin: 0 auto;
+}
+
+.chart-card {
+    background: rgba(15, 23, 42, 0.6);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(99, 102, 241, 0.2);
+    padding: 24px;
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.05);
+    transition: all 0.3s ease;
+}
+
+.chart-card:hover {
+    border-color: rgba(139, 92, 246, 0.3);
+}
+
+.chart-card h3 {
+    font-size: 16px;
+    font-weight: 600;
+    margin-bottom: 18px;
+    color: #f1f5f9;
+}
+
+.chart-container {
+    width: 100%;
+    height: 350px;
+}
+
+.table-card {
+    background: rgba(15, 23, 42, 0.6);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(99, 102, 241, 0.2);
+    padding: 24px;
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.05);
+}
+
+.table-card h3 {
+    font-size: 16px;
+    font-weight: 600;
+    margin-bottom: 18px;
+    color: #f1f5f9;
+}
+
+.chart-row {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 24px;
+    margin-bottom: 24px;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+th, td {
+    padding: 14px 18px;
+    text-align: left;
+    border-bottom: 1px solid rgba(99, 102, 241, 0.1);
+}
+
+th {
+    background: rgba(30, 41, 59, 0.5);
+    font-weight: 600;
+    font-size: 13px;
+    color: #94a3b8;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+td {
+    font-size: 14px;
+    color: #cbd5e1;
+}
+
+tr:hover td {
+    background: rgba(59, 130, 246, 0.05);
+}
+
+.tag {
+    display: inline-block;
+    padding: 5px 14px;
+    border-radius: 6px;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.tag.high {
+    background: rgba(16, 185, 129, 0.15);
+    color: #10b981;
+    border: 1px solid rgba(16, 185, 129, 0.3);
+}
+
+.tag.medium {
+    background: rgba(59, 130, 246, 0.15);
+    color: #3b82f6;
+    border: 1px solid rgba(59, 130, 246, 0.3);
+}
+
+.tag.low {
+    background: rgba(249, 115, 22, 0.15);
+    color: #f97316;
+    border: 1px solid rgba(249, 115, 22, 0.3);
+}
+
+.loading {
+    text-align: center;
+    padding: 40px;
+    color: #94a3b8;
+    font-size: 14px;
+}
+
+/* ============================================
+   响应式设计 - 移动端优化
+   ============================================ */
+
+/* 平板设备 (768px - 1024px) */
+@media screen and (max-width: 1024px) {
+    .navbar {
+        padding: 12px 16px;
+    }
+
+    .nav-brand {
+        font-size: 18px;
+    }
+
+    .nav-item {
+        padding: 6px 12px;
+        font-size: 13px;
+    }
+
+    .header {
+        padding: 20px 24px;
+    }
+
+    .header h1 {
+        font-size: 22px;
+    }
+
+    .container {
+        padding: 20px;
+    }
+
+    .chart-row {
+        grid-template-columns: 1fr;
+        gap: 16px;
+    }
+
+    .chart-card, .table-card {
+        padding: 18px;
+    }
+
+    table {
+        font-size: 13px;
+    }
+
+    th, td {
+        padding: 10px 12px;
+    }
+}
+
+/* 移动设备 (最大768px) */
+@media screen and (max-width: 768px) {
+    .navbar {
+        flex-direction: column;
+        gap: 12px;
+        padding: 12px;
+    }
+
+    .nav-brand {
+        font-size: 16px;
+        width: 100%;
+        text-align: center;
+    }
+
+    .nav-menu {
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 4px;
+    }
+
+    .nav-item {
+        padding: 5px 10px;
+        font-size: 12px;
+    }
+
+    .nav-user {
+        width: 100%;
+        justify-content: center;
+    }
+
+    .header {
+        padding: 16px;
+    }
+
+    .header h1 {
+        font-size: 18px;
+    }
+
+    .header p {
+        font-size: 12px;
+    }
+
+    .container {
+        padding: 12px;
+    }
+
+    .chart-card, .table-card {
+        padding: 12px;
+        margin-bottom: 12px;
+    }
+
+    .chart-card h3, .table-card h3 {
+        font-size: 14px;
+        margin-bottom: 12px;
+    }
+
+    .chart-container {
+        height: 250px;
+    }
+
+    /* 表格响应式 */
+    table {
+        font-size: 11px;
+        display: block;
+        overflow-x: auto;
+        white-space: nowrap;
+    }
+
+    th, td {
+        padding: 8px 10px;
+    }
+
+    /* KPI卡片网格 */
+    .kpi-grid {
+        grid-template-columns: repeat(2, 1fr) !important;
+        gap: 10px !important;
+    }
+
+    .kpi-card {
+        padding: 12px !important;
+    }
+
+    .kpi-value {
+        font-size: 20px !important;
+    }
+
+    /* 工具栏响应式 */
+    .toolbar {
+        flex-direction: column !important;
+        gap: 10px !important;
+    }
+
+    .toolbar select, .toolbar button {
+        width: 100%;
+        padding: 8px;
+    }
+}
+
+/* 小屏移动设备 (最大480px) */
+@media screen and (max-width: 480px) {
+    .nav-item {
+        font-size: 11px;
+        padding: 4px 8px;
+    }
+
+    .header h1 {
+        font-size: 16px;
+    }
+
+    .chart-container {
+        height: 200px;
+    }
+
+    .kpi-grid {
+        grid-template-columns: 1fr !important;
+    }
+
+    /* 登录页面响应式 */
+    .login-container {
+        padding: 20px !important;
+    }
+
+    .login-box {
+        padding: 24px !important;
+    }
+
+    /* AI助手响应式 */
+    .chat-container {
+        height: 400px !important;
+    }
+
+    .message {
+        max-width: 90% !important;
+        font-size: 13px !important;
+    }
+
+    .suggestion-chip {
+        font-size: 11px !important;
+        padding: 6px 12px !important;
+    }
+}
+
+/* 触摸设备优化 */
+@media (hover: none) and (pointer: coarse) {
+    .nav-item:hover,
+    .chart-card:hover,
+    .logout-btn:hover {
+        transform: none;
+    }
+
+    .nav-item:active {
+        background: rgba(59, 130, 246, 0.2);
+    }
+
+    button {
+        min-height: 44px;
+        min-width: 44px;
+    }
+}
+
+/* 横屏模式优化 */
+@media screen and (max-height: 600px) and (orientation: landscape) {
+    .header {
+        padding: 12px 24px;
+    }
+
+    .header h1 {
+        font-size: 18px;
+        margin-bottom: 4px;
+    }
+
+    .header p {
+        font-size: 12px;
+    }
+
+    .container {
+        padding: 16px;
+    }
+
+    .chart-container {
+        height: 280px;
+    }
+}

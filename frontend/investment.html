@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>投资情报系统 - 智能数据平台</title>
+    <script src="https://cdn.jsdelivr.net/npm/echarts@5.4.3/dist/echarts.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue@3.3.4/dist/vue.global.js"></script>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div id="app">
+        <nav class="navbar">
+            <div class="nav-brand">DATA INSIGHTS</div>
+            <div class="nav-menu">
+                <a class="nav-item" href="dashboard.html">市场洞察</a>
+                <a class="nav-item" href="supply-chain.html">智能供应链</a>
+                <a class="nav-item" href="medical-performance.html">医疗效能</a>
+                <a class="nav-item active" href="investment.html">投资情报</a>
+                <a class="nav-item" href="rwa.html">研发支持</a>
+            </div>
+            <div class="nav-user">
+                <span class="user-name">{{ userName }}</span>
+                <button class="logout-btn" @click="logout">退出登录</button>
+            </div>
+        </nav>
+
+        <div class="header">
+            <h1>投资情报系统</h1>
+            <p>行业洞察 · 估值分析 · 并购机会</p>
+        </div>
+
+        <div class="container">
+            <div v-if="loading" class="loading">数据加载中...</div>
+            <div v-else>
+                <div class="kpi-grid" style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; margin-bottom: 24px;">
+                    <div class="kpi-card">
+                        <div class="kpi-title">跟踪企业数</div>
+                        <div class="kpi-value"><span class="number">256</span><span class="unit">家</span></div>
+                        <div class="kpi-growth up"><span>↑</span><span>12</span></div>
+                    </div>
+                    <div class="kpi-card">
+                        <div class="kpi-title">总市值</div>
+                        <div class="kpi-value"><span class="number">8520</span><span class="unit">亿元</span></div>
+                        <div class="kpi-growth up"><span>↑</span><span>8.5%</span></div>
+                    </div>
+                    <div class="kpi-card">
+                        <div class="kpi-title">并购机会</div>
+                        <div class="kpi-value"><span class="number">18</span><span class="unit">个</span></div>
+                        <div class="kpi-growth up"><span>↑</span><span>5</span></div>
+                    </div>
+                    <div class="kpi-card">
+                        <div class="kpi-title">研报覆盖</div>
+                        <div class="kpi-value"><span class="number">152</span><span class="unit">份</span></div>
+                        <div class="kpi-growth up"><span>↑</span><span>23</span></div>
+                    </div>
+                </div>
+
+                <div class="chart-row">
+                    <div class="chart-card">
+                        <h3>行业估值趋势</h3>
+                        <div ref="valuationChart" style="width: 100%; height: 350px;"></div>
+                    </div>
+                    <div class="chart-card">
+                        <h3>细分领域投资热度</h3>
+                        <div ref="investmentChart" style="width: 100%; height: 350px;"></div>
+                    </div>
+                </div>
+
+                <div class="table-card">
+                    <h3>重点投资机会</h3>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>企业名称</th>
+                                <th>细分领域</th>
+                                <th>估值(亿元)</th>
+                                <th>增长率</th>
+                                <th>投资阶段</th>
+                                <th>推荐度</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr v-for="item in opportunities" :key="item.company">
+                                <td>{{ item.company }}</td>
+                                <td>{{ item.sector }}</td>
+                                <td>{{ item.valuation }}</td>
+                                <td style="color: #10b981;">+{{ item.growth }}%</td>
+                                <td><span class="tag high">{{ item.stage }}</span></td>
+                                <td><span class="tag high">⭐{{ item.rating }}</span></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const { createApp } = Vue;
+        createApp({
+            data() {
+                return {
+                    loading: false,
+                    userName: '管理员',
+                    token: localStorage.getItem('token'),
+                    opportunities: [
+                        {company: "创新生物制药", sector: "抗体药物", valuation: 85, growth: 45, stage: "B轮", rating: 4.8},
+                        {company: "精准医疗科技", sector: "基因检测", valuation: 52, growth: 38, stage: "A轮", rating: 4.5},
+                        {company: "数字健康公司", sector: "互联网医疗", valuation: 120, growth: 52, stage: "C轮", rating: 4.7},
+                        {company: "CRO企业", sector: "临床服务", valuation: 68, growth: 28, stage: "Pre-IPO", rating: 4.3}
+                    ]
+                };
+            },
+            mounted() {
+                if (!this.token) { window.location.href = 'login.html'; return; }
+                this.$nextTick(() => {
+                    this.renderValuationChart();
+                    this.renderInvestmentChart();
+                });
+            },
+            methods: {
+                logout() { localStorage.removeItem('token'); window.location.href = 'login.html'; },
+                renderValuationChart() {
+                    const chart = echarts.init(this.$refs.valuationChart);
+                    chart.setOption({
+                        tooltip: {trigger: 'axis'},
+                        grid: {left: '3%', right: '4%', bottom: '3%', containLabel: true},
+                        xAxis: {type: 'category', data: ['2019', '2020', '2021', '2022', '2023', '2024'], axisLabel: {color: '#94a3b8'}},
+                        yAxis: {type: 'value', name: '平均估值(亿元)', nameTextStyle: {color: '#94a3b8'}, axisLabel: {color: '#94a3b8'}, splitLine: {lineStyle: {color: 'rgba(99, 102, 241, 0.1)'}}},
+                        series: [{
+                            type: 'line',
+                            smooth: true,
+                            data: [28, 35, 48, 62, 75, 92],
+                            itemStyle: {color: '#3b82f6'},
+                            areaStyle: {color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{offset: 0, color: 'rgba(59, 130, 246, 0.3)'}, {offset: 1, color: 'rgba(59, 130, 246, 0.05)'})]}
+                        }]
+                    });
+                    window.addEventListener('resize', () => chart.resize());
+                },
+                renderInvestmentChart() {
+                    const chart = echarts.init(this.$refs.investmentChart);
+                    chart.setOption({
+                        tooltip: {trigger: 'item'},
+                        series: [{
+                            type: 'pie',
+                            radius: ['40%', '70%'],
+                            data: [
+                                {value: 85, name: '抗体药物', itemStyle: {color: '#3b82f6'}},
+                                {value: 68, name: '疫苗', itemStyle: {color: '#8b5cf6'}},
+                                {value: 52, name: '基因治疗', itemStyle: {color: '#06b6d4'}},
+                                {value: 45, name: 'CRO/CDMO', itemStyle: {color: '#10b981'}},
+                                {value: 38, name: '互联网医疗', itemStyle: {color: '#f59e0b'}}
+                            ],
+                            label: {color: '#cbd5e1'}
+                        }]
+                    });
+                    window.addEventListener('resize', () => chart.resize());
+                }
+            }
+        }).mount('#app');
+    </script>
+</body>
+</html>

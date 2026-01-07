@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>价格分析 - 智能数据平台</title>
+    <script src="https://cdn.jsdelivr.net/npm/echarts@5.4.3/dist/echarts.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue@3.3.4/dist/vue.global.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios@1.6.2/dist/axios.min.js"></script>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div id="app">
+        <nav class="navbar">
+            <div class="nav-brand">DATA INSIGHTS</div>
+            <div class="nav-menu">
+                <a class="nav-item" href="dashboard.html">市场洞察</a>
+                <a class="nav-item" href="competitor.html">竞品分析</a>
+                <a class="nav-item" href="forecast.html">销售预测</a>
+                <a class="nav-item" href="customer.html">客户洞察</a>
+                <a class="nav-item active" href="price.html">价格分析</a>
+                <a class="nav-item" href="supply-chain.html">智能供应链</a>
+                <a class="nav-item" href="medical-performance.html">医疗效能</a>
+                <a class="nav-item" href="investment.html">投资情报</a>
+                <a class="nav-item" href="rwa.html">研发支持</a>
+                <a class="nav-item" href="assistant.html">AI助手</a>
+            </div>
+            <div class="nav-user">
+                <span class="user-name">{{ userName }}</span>
+                <button class="logout-btn" @click="logout">退出登录</button>
+            </div>
+        </nav>
+
+        <div class="header">
+            <h1>价格分析</h1>
+            <p>产品价格趋势与弹性分析</p>
+        </div>
+
+        <div class="container">
+            <div v-if="loading" class="loading">数据加载中...</div>
+
+            <div v-else>
+                <div class="chart-card" style="margin-bottom: 24px;">
+                    <h3>价格趋势对比</h3>
+                    <div ref="priceChart" style="width: 100%; height: 400px;"></div>
+                </div>
+
+                <div class="table-card">
+                    <h3>价格弹性分析</h3>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>产品名称</th>
+                                <th>弹性系数</th>
+                                <th>解读</th>
+                                <th>建议</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr v-for="prod in products" :key="prod.name">
+                                <td>{{ prod.name }}</td>
+                                <td>{{ prod.elasticity }}</td>
+                                <td>{{ prod.interpretation }}</td>
+                                <td>
+                                    <span class="tag" :class="Math.abs(prod.elasticity) > 1 ? 'high' : 'medium'">
+                                        {{ Math.abs(prod.elasticity) > 1 ? '敏感' : '不敏感' }}
+                                    </span>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const { createApp } = Vue;
+        const API_BASE = 'http://localhost:8000';
+
+        createApp({
+            data() {
+                return {
+                    loading: true,
+                    userName: '管理员',
+                    token: localStorage.getItem('token'),
+                    products: [],
+                    priceData: {}
+                };
+            },
+            mounted() {
+                if (!this.token) {
+                    window.location.href = 'login.html';
+                    return;
+                }
+                this.loadData();
+            },
+            methods: {
+                logout() {
+                    localStorage.removeItem('token');
+                    window.location.href = 'login.html';
+                },
+                async loadData() {
+                    try {
+                        const [priceRes, elasticityRes] = await Promise.all([
+                            axios.get(`${API_BASE}/api/price/trend`, {
+                                headers: { Authorization: `Bearer ${this.token}` }
+                            }),
+                            axios.get(`${API_BASE}/api/price/elasticity`, {
+                                headers: { Authorization: `Bearer ${this.token}` }
+                            })
+                        ]);
+
+                        this.priceData = priceRes.data;
+                        this.products = elasticityRes.data.products;
+
+                        this.loading = false;
+                        this.$nextTick(() => {
+                            this.renderPriceChart();
+                        });
+                    } catch (error) {
+                        console.error(error);
+                        if (error.response?.status === 401) this.logout();
+                    }
+                },
+                renderPriceChart() {
+                    const chart = echarts.init(this.$refs.priceChart);
+                    const data = this.priceData;
+
+                    const option = {
+                        tooltip: {
+                            trigger: 'axis',
+                            backgroundColor: 'rgba(15, 23, 42, 0.95)',
+                            borderColor: 'rgba(99, 102, 241, 0.3)',
+                            textStyle: { color: '#e2e8f0' }
+                        },
+                        legend: {
+                            data: data.series.map(s => s.name),
+                            top: 10,
+                            textStyle: { color: '#94a3b8' }
+                        },
+                        grid: {
+                            left: '3%',
+                            right: '4%',
+                            bottom: '3%',
+                            containLabel: true
+                        },
+                        xAxis: {
+                            type: 'category',
+                            data: data.months,
+                            axisLine: { lineStyle: { color: 'rgba(99, 102, 241, 0.3)' } },
+                            axisLabel: { color: '#94a3b8', rotate: 45 }
+                        },
+                        yAxis: {
+                            type: 'value',
+                            name: '价格(元)',
+                            nameTextStyle: { color: '#94a3b8' },
+                            axisLine: { lineStyle: { color: 'rgba(99, 102, 241, 0.3)' } },
+                            axisLabel: { color: '#94a3b8' },
+                            splitLine: { lineStyle: { color: 'rgba(99, 102, 241, 0.1)' } }
+                        },
+                        series: data.series.map(s => ({
+                            name: s.name,
+                            type: 'line',
+                            smooth: true,
+                            data: s.data,
+                            itemStyle: { color: s.name === '本公司' ? '#3b82f6' : s.name === '竞品A' ? '#ef4444' : s.name === '竞品B' ? '#10b981' : '#94a3b8' }
+                        }))
+                    };
+                    chart.setOption(option);
+                    window.addEventListener('resize', () => chart.resize());
+                }
+            }
+        }).mount('#app');
+    </script>
+</body>
+</html>

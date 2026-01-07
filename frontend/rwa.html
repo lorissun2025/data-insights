@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>研发决策支持 - 智能数据平台</title>
+    <script src="https://cdn.jsdelivr.net/npm/echarts@5.4.3/dist/echarts.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue@3.3.4/dist/vue.global.js"></script>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div id="app">
+        <nav class="navbar">
+            <div class="nav-brand">DATA INSIGHTS</div>
+            <div class="nav-menu">
+                <a class="nav-item" href="dashboard.html">市场洞察</a>
+                <a class="nav-item" href="investment.html">投资情报</a>
+                <a class="nav-item active" href="rwa.html">研发支持</a>
+            </div>
+            <div class="nav-user">
+                <span class="user-name">{{ userName }}</span>
+                <button class="logout-btn" @click="logout">退出登录</button>
+            </div>
+        </nav>
+
+        <div class="header">
+            <h1>研发决策支持</h1>
+            <p>RWS真实世界研究 · 临床试验匹配 · 研发ROI分析</p>
+        </div>
+
+        <div class="container">
+            <div v-if="loading" class="loading">数据加载中...</div>
+            <div v-else>
+                <div class="chart-row">
+                    <div class="chart-card">
+                        <h3>RWS研究分布</h3>
+                        <div ref="rwaChart" style="width: 100%; height: 350px;"></div>
+                    </div>
+                    <div class="chart-card">
+                        <h3>研发投入产出</h3>
+                        <div ref="roiChart" style="width: 100%; height: 350px;"></div>
+                    </div>
+                </div>
+
+                <div class="table-card">
+                    <h3>重点RWS研究项目</h3>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>研究名称</th>
+                                <th>适应症</th>
+                                <th>样本量</th>
+                                <th>研究周期</th>
+                                <th>进展</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr v-for="study in studies" :key="study.name">
+                                <td>{{ study.name }}</td>
+                                <td>{{ study.indication }}</td>
+                                <td>{{ study.samples }}</td>
+                                <td>{{ study.duration }}</td>
+                                <td><span class="tag high">{{ study.progress }}</span></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const { createApp } = Vue;
+        createApp({
+            data() { return { loading: false, userName: '管理员', token: localStorage.getItem('token'), studies: [
+                {name: "抗PD-1单抗RWS", indication: "非小细胞肺癌", samples: 2850, duration: "24个月", progress: "进行中"},
+                {name: "GLP-1激动剂RWS", indication: "2型糖尿病", samples: 5200, duration: "18个月", progress: "完成"}
+            ]}; },
+            mounted() {
+                if (!this.token) { window.location.href = 'login.html'; return; }
+                this.$nextTick(() => {
+                    const chart1 = echarts.init(this.$refs.rwaChart);
+                    chart1.setOption({
+                        series: [{type: 'pie', radius: ['40%', '70%'], data: [
+                            {value: 35, name: '肿瘤学', itemStyle: {color: '#ef4444'}},
+                            {value: 28, name: '内分泌', itemStyle: {color: '#3b82f6'}},
+                            {value: 22, name: '心血管', itemStyle: {color: '#10b981'}},
+                            {value: 15, name: '神经科学', itemStyle: {color: '#8b5cf6'}}
+                        ], label: {color: '#cbd5e1'}}]
+                    });
+
+                    const chart2 = echarts.init(this.$refs.roiChart);
+                    chart2.setOption({
+                        xAxis: {type: 'category', data: ['2019', '2020', '2021', '2022', '2023', '2024'], axisLabel: {color: '#94a3b8'}},
+                        yAxis: {type: 'value', name: 'ROI', nameTextStyle: {color: '#94a3b8'}, axisLabel: {color: '#94a3b8'}, splitLine: {lineStyle: {color: 'rgba(99, 102, 241, 0.1)'}}},
+                        series: [{type: 'bar', data: [2.5, 3.2, 4.1, 5.5, 6.8, 8.2], itemStyle: {color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{offset: 0, color: '#3b82f6'}, {offset: 1, color: '#8b5cf6'}])}}]
+                    });
+                });
+            },
+            methods: {
+                logout() { localStorage.removeItem('token'); window.location.href = 'login.html'; }
+            }
+        }).mount('#app');
+    </script>
+</body>
+</html>

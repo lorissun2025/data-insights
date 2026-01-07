@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>客户洞察 - 智能数据平台</title>
+    <script src="https://cdn.jsdelivr.net/npm/echarts@5.4.3/dist/echarts.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue@3.3.4/dist/vue.global.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios@1.6.2/dist/axios.min.js"></script>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div id="app">
+        <nav class="navbar">
+            <div class="nav-brand">DATA INSIGHTS</div>
+            <div class="nav-menu">
+                <a class="nav-item" href="dashboard.html">市场洞察</a>
+                <a class="nav-item" href="competitor.html">竞品分析</a>
+                <a class="nav-item" href="forecast.html">销售预测</a>
+                <a class="nav-item active" href="customer.html">客户洞察</a>
+                <a class="nav-item" href="price.html">价格分析</a>
+                <a class="nav-item" href="supply-chain.html">智能供应链</a>
+                <a class="nav-item" href="medical-performance.html">医疗效能</a>
+                <a class="nav-item" href="investment.html">投资情报</a>
+                <a class="nav-item" href="rwa.html">研发支持</a>
+                <a class="nav-item" href="assistant.html">AI助手</a>
+            </div>
+            <div class="nav-user">
+                <span class="user-name">{{ userName }}</span>
+                <button class="logout-btn" @click="logout">退出登录</button>
+            </div>
+        </nav>
+
+        <div class="header">
+            <h1>客户洞察</h1>
+            <p>医院客户画像与分层分析</p>
+        </div>
+
+        <div class="container">
+            <div v-if="loading" class="loading">数据加载中...</div>
+
+            <div v-else>
+                <div class="chart-card" style="margin-bottom: 24px;">
+                    <h3>客户分层分布</h3>
+                    <div ref="segmentChart" style="width: 100%; height: 400px;"></div>
+                </div>
+
+                <div class="table-card">
+                    <h3>重点医院客户列表</h3>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>医院名称</th>
+                                <th>等级</th>
+                                <th>省份</th>
+                                <th>采购次数</th>
+                                <th>采购金额(万元)</th>
+                                <th>客户等级</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr v-for="hosp in hospitals" :key="hosp.id">
+                                <td>{{ hosp.name }}</td>
+                                <td>{{ hosp.level }}</td>
+                                <td>{{ hosp.province }}</td>
+                                <td>{{ hosp.purchases }}次</td>
+                                <td>{{ hosp.amount }}</td>
+                                <td>
+                                    <span class="tag" :class="hosp.amount > 4000 ? 'high' : hosp.amount > 3000 ? 'medium' : 'low'">
+                                        {{ hosp.amount > 4000 ? '核心' : hosp.amount > 3000 ? '重要' : '一般' }}
+                                    </span>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const { createApp } = Vue;
+        const API_BASE = 'http://localhost:8000';
+
+        createApp({
+            data() {
+                return {
+                    loading: true,
+                    userName: '管理员',
+                    token: localStorage.getItem('token'),
+                    hospitals: [],
+                    segments: []
+                };
+            },
+            mounted() {
+                if (!this.token) {
+                    window.location.href = 'login.html';
+                    return;
+                }
+                this.loadData();
+            },
+            methods: {
+                logout() {
+                    localStorage.removeItem('token');
+                    window.location.href = 'login.html';
+                },
+                async loadData() {
+                    try {
+                        const [hospRes, segRes] = await Promise.all([
+                            axios.get(`${API_BASE}/api/customer/hospitals`, {
+                                headers: { Authorization: `Bearer ${this.token}` }
+                            }),
+                            axios.get(`${API_BASE}/api/customer/segmentation`, {
+                                headers: { Authorization: `Bearer ${this.token}` }
+                            })
+                        ]);
+
+                        this.hospitals = hospRes.data.data;
+                        this.segments = segRes.data.segments;
+
+                        this.loading = false;
+                        this.$nextTick(() => {
+                            this.renderSegmentChart();
+                        });
+                    } catch (error) {
+                        console.error(error);
+                        if (error.response?.status === 401) this.logout();
+                    }
+                },
+                renderSegmentChart() {
+                    const chart = echarts.init(this.$refs.segmentChart);
+                    const data = this.segments;
+
+                    const option = {
+                        tooltip: {
+                            trigger: 'item',
+                            backgroundColor: 'rgba(15, 23, 42, 0.95)',
+                            borderColor: 'rgba(99, 102, 241, 0.3)',
+                            textStyle: { color: '#e2e8f0' }
+                        },
+                        legend: {
+                            orient: 'vertical',
+                            right: 10,
+                            top: 'center',
+                            textStyle: { color: '#94a3b8' }
+                        },
+                        series: [{
+                            name: '客户分层',
+                            type: 'pie',
+                            radius: ['40%', '70%'],
+                            avoidLabelOverlap: false,
+                            itemStyle: {
+                                borderRadius: 10,
+                                borderColor: '#0a0e27',
+                                borderWidth: 2
+                            },
+                            label: {
+                                show: true,
+                                formatter: '{b}: {c}家\n({d}%)',
+                                color: '#cbd5e1'
+                            },
+                            emphasis: {
+                                label: {
+                                    show: true,
+                                    fontSize: 16,
+                                    fontWeight: 'bold'
+                                }
+                            },
+                            data: data.map(s => ({
+                                value: s.count,
+                                name: s.name,
+                                itemStyle: { color: s.color }
+                            }))
+                        }]
+                    };
+                    chart.setOption(option);
+                    window.addEventListener('resize', () => chart.resize());
+                }
+            }
+        }).mount('#app');
+    </script>
+</body>
+</html>
