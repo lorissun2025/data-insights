@@ -252,8 +252,12 @@
 
             // 模拟登录验证
             setTimeout(function() {
+                console.log('Login attempt - Username:', username, 'Password:', password);
+
                 if (username === 'admin' && password === 'admin123') {
                     // 登录成功
+                    console.log('Login successful!');
+
                     localStorage.setItem('token', 'demo_token_' + Date.now());
                     localStorage.setItem('userInfo', JSON.stringify({
                         username: 'admin',
@@ -261,16 +265,21 @@
                         role: 'admin'
                     }));
 
+                    console.log('Token saved:', localStorage.getItem('token'));
+                    console.log('User info saved:', localStorage.getItem('userInfo'));
+
                     messageDiv.textContent = '✅ 登录成功!正在跳转...';
                     messageDiv.className = 'message success';
                     messageDiv.style.display = 'block';
 
                     // 跳转到演示页面
                     setTimeout(function() {
+                        console.log('Redirecting to demo.html...');
                         window.location.href = 'demo.html?t=' + Date.now();
                     }, 1000);
                 } else {
                     // 登录失败
+                    console.log('Login failed!');
                     messageDiv.textContent = '❌ 用户名或密码错误';
                     messageDiv.className = 'message error';
                     messageDiv.style.display = 'block';
@@ -284,8 +293,12 @@
 
         // 检查是否已登录
         window.addEventListener('load', function() {
+            console.log('Login page loaded');
             var token = localStorage.getItem('token');
+            console.log('Existing token:', token);
+
             if (token) {
+                console.log('Already logged in, redirecting to demo...');
                 // 已登录,直接跳转到演示页面
                 window.location.href = 'demo.html?t=' + Date.now();
             }
