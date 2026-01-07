@@ -4,140 +4,359 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AI助手 - 智能数据平台</title>
-    <script src="https://cdn.jsdelivr.net/npm/vue@3.3.4/dist/vue.global.js"></script>
-    <link rel="stylesheet" href="styles.css">
     <style>
-        .chat-container { height: 500px; display: flex; flex-direction: column; }
-        .chat-messages { flex: 1; overflow-y: auto; padding: 20px; background: rgba(15, 23, 42, 0.6); border-radius: 8px; margin-bottom: 16px; }
-        .message { margin-bottom: 16px; padding: 12px 16px; border-radius: 8px; max-width: 80%; }
-        .message.user { background: rgba(59, 130, 246, 0.2); margin-left: auto; }
-        .message.assistant { background: rgba(139, 92, 246, 0.2); }
-        .input-area { display: flex; gap: 12px; }
-        .chat-input { flex: 1; padding: 14px; background: rgba(30, 41, 59, 0.8); border: 1px solid rgba(99, 102, 241, 0.3); border-radius: 8px; color: #e2e8f0; }
-        .send-btn { padding: 14px 32px; background: linear-gradient(135deg, #3b82f6, #8b5cf6); border: none; border-radius: 8px; color: white; cursor: pointer; }
-        .send-btn:hover { transform: translateY(-2px); }
-        .suggestions { display: flex; gap: 8px; margin-bottom: 16px; flex-wrap: wrap; }
-        .suggestion-chip { padding: 8px 16px; background: rgba(59, 130, 246, 0.15); border: 1px solid rgba(59, 130, 246, 0.3); border-radius: 6px; color: #60a5fa; cursor: pointer; font-size: 13px; }
-        .suggestion-chip:hover { background: rgba(59, 130, 246, 0.25); }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #0a0e27;
+            color: #e2e8f0;
+            min-height: 100vh;
+        }
+
+        .navbar {
+            background: rgba(15, 23, 42, 0.8);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(99, 102, 241, 0.2);
+            padding: 16px 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .nav-brand {
+            font-size: 22px;
+            font-weight: 700;
+            background: linear-gradient(135deg, #60a5fa 0%, #a78bfa 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .nav-menu {
+            display: flex;
+            gap: 8px;
+        }
+
+        .nav-item {
+            padding: 8px 16px;
+            color: #94a3b8;
+            text-decoration: none;
+            border-radius: 6px;
+            font-size: 14px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .nav-item:hover {
+            background: rgba(59, 130, 246, 0.1);
+            color: #e2e8f0;
+        }
+
+        .nav-item.active {
+            background: rgba(59, 130, 246, 0.15);
+            color: #60a5fa;
+        }
+
+        .nav-user {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .user-name {
+            color: #cbd5e1;
+            font-size: 14px;
+        }
+
+        .logout-btn {
+            padding: 6px 14px;
+            background: rgba(239, 68, 68, 0.15);
+            border: 1px solid rgba(239, 68, 68, 0.3);
+            border-radius: 6px;
+            color: #f87171;
+            cursor: pointer;
+            font-size: 13px;
+        }
+
+        .header {
+            background: linear-gradient(135deg, rgba(59, 130, 246, 0.15) 0%, rgba(139, 92, 246, 0.15) 100%);
+            border-bottom: 1px solid rgba(99, 102, 241, 0.3);
+            color: white;
+            padding: 24px 32px;
+        }
+
+        .header h1 {
+            font-size: 26px;
+            margin-bottom: 8px;
+            background: linear-gradient(135deg, #60a5fa 0%, #a78bfa 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-weight: 700;
+        }
+
+        .header p {
+            font-size: 14px;
+            color: #94a3b8;
+        }
+
+        .container {
+            padding: 28px;
+            max-width: 1600px;
+            margin: 0 auto;
+        }
+
+        .chart-card {
+            background: rgba(15, 23, 42, 0.6);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(99, 102, 241, 0.2);
+            padding: 24px;
+            border-radius: 12px;
+            margin-bottom: 24px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .chart-card h3 {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 16px;
+            color: #f1f5f9;
+        }
+
+        .chat-container {
+            height: 500px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .chat-messages {
+            flex: 1;
+            overflow-y: auto;
+            padding: 20px;
+            background: rgba(15, 23, 42, 0.6);
+            border-radius: 8px;
+            margin-bottom: 16px;
+            max-height: 350px;
+        }
+
+        .message {
+            margin-bottom: 16px;
+            padding: 12px 16px;
+            border-radius: 8px;
+            max-width: 80%;
+        }
+
+        .message.user {
+            background: rgba(59, 130, 246, 0.2);
+            margin-left: auto;
+        }
+
+        .message.assistant {
+            background: rgba(139, 92, 246, 0.2);
+        }
+
+        .input-area {
+            display: flex;
+            gap: 12px;
+        }
+
+        .chat-input {
+            flex: 1;
+            padding: 14px;
+            background: rgba(30, 41, 59, 0.8);
+            border: 1px solid rgba(99, 102, 241, 0.3);
+            border-radius: 8px;
+            color: #e2e8f0;
+        }
+
+        .send-btn {
+            padding: 14px 32px;
+            background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+            border: none;
+            border-radius: 8px;
+            color: white;
+            cursor: pointer;
+        }
+
+        .send-btn:hover {
+            transform: translateY(-2px);
+        }
+
+        .suggestions {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 16px;
+            flex-wrap: wrap;
+        }
+
+        .suggestion-chip {
+            padding: 8px 16px;
+            background: rgba(59, 130, 246, 0.15);
+            border: 1px solid rgba(59, 130, 246, 0.3);
+            border-radius: 6px;
+            color: #60a5fa;
+            cursor: pointer;
+            font-size: 13px;
+        }
+
+        .suggestion-chip:hover {
+            background: rgba(59, 130, 246, 0.25);
+        }
+
+        ul {
+            list-style: none;
+            padding-left: 0;
+        }
+
+        ul li {
+            padding: 8px 0;
+            color: #94a3b8;
+        }
     </style>
 </head>
 <body>
-    <div id="app">
-        <nav class="navbar">
-            <div class="nav-brand">DATA INSIGHTS</div>
-            <div class="nav-menu">
-                <a class="nav-item" href="dashboard.html">数据分析</a>
-                <a class="nav-item active" href="assistant.html">AI助手</a>
-            </div>
-            <div class="nav-user">
-                <span class="user-name">{{ userName }}</span>
-                <button class="logout-btn" @click="logout">退出登录</button>
-            </div>
-        </nav>
-
-        <div class="header">
-            <h1>AI智能助手</h1>
-            <p>自然语言查询 · 智能分析 · 报告生成</p>
+    <div class="navbar">
+        <div class="nav-brand">DATA INSIGHTS</div>
+        <div class="nav-menu">
+            <a class="nav-item" href="dashboard.html">数据分析</a>
+            <a class="nav-item active" href="assistant.html">AI助手</a>
         </div>
+        <div class="nav-user">
+            <span class="user-name" id="userName">管理员</span>
+            <button class="logout-btn" onclick="logout()">退出</button>
+        </div>
+    </div>
 
-        <div class="container">
-            <div class="chart-card">
-                <h3>💬 开始对话</h3>
+    <div class="header">
+        <h1>AI智能助手</h1>
+        <p>自然语言查询 · 智能分析 · 报告生成</p>
+    </div>
 
-                <div class="suggestions">
-                    <div class="suggestion-chip" @click="askQuestion('本月销售额是多少?')">本月销售额是多少?</div>
-                    <div class="suggestion-chip" @click="askQuestion('分析阿莫西林的销售趋势')">分析阿莫西林的销售趋势</div>
-                    <div class="suggestion-chip" @click="askQuestion('哪些医院增长最快?')">哪些医院增长最快?</div>
-                    <div class="suggestion-chip" @click="askQuestion('生成本月销售报告')">生成本月销售报告</div>
-                </div>
+    <div class="container">
+        <div class="chart-card">
+            <h3>💬 开始对话</h3>
 
-                <div class="chat-container">
-                    <div class="chat-messages" ref="messagesContainer">
-                        <div v-for="(msg, index) in messages" :key="index" :class="['message', msg.role]">
-                            <div style="font-weight: 600; margin-bottom: 4px; color: #f1f5f9;">{{ msg.role === 'user' ? '你' : 'AI助手' }}</div>
-                            <div style="color: #cbd5e1;">{{ msg.content }}</div>
-                        </div>
-                        <div v-if="loading" class="message assistant">
-                            <div style="color: #94a3b8;">正在思考中...</div>
-                        </div>
+            <div class="suggestions">
+                <div class="suggestion-chip" onclick="askQuestion('本月销售额是多少?')">本月销售额是多少?</div>
+                <div class="suggestion-chip" onclick="askQuestion('分析阿莫西林的销售趋势')">分析阿莫西林的销售趋势</div>
+                <div class="suggestion-chip" onclick="askQuestion('哪些医院增长最快?')">哪些医院增长最快?</div>
+                <div class="suggestion-chip" onclick="askQuestion('生成本月销售报告')">生成本月销售报告</div>
+            </div>
+
+            <div class="chat-container">
+                <div class="chat-messages" id="chatMessages">
+                    <div class="message assistant">
+                        <div style="font-weight: 600; margin-bottom: 4px; color: #f1f5f9;">AI助手</div>
+                        <div style="color: #cbd5e1;">您好!我是AI智能助手,可以帮您查询和分析数据。您可以问我关于销售、趋势、竞品等问题,或者让我生成分析报告。</div>
                     </div>
-
-                    <div class="input-area">
-                        <input type="text" class="chat-input" v-model="userInput" @keyup.enter="sendMessage" placeholder="输入您的问题...">
-                        <button class="send-btn" @click="sendMessage" :disabled="!userInput.trim()">发送</button>
-                    </div>
                 </div>
 
-                <div style="margin-top: 24px; padding: 16px; background: rgba(15, 23, 42, 0.6); border-radius: 8px;">
-                    <h4 style="color: #f1f5f9; margin-bottom: 12px;">📊 支持的查询类型</h4>
-                    <ul style="color: #94a3b8; line-height: 1.8;">
-                        <li>💰 销售数据查询 (销售额、销售量、增长率)</li>
-                        <li>📈 趋势分析 (产品、区域、时间维度)</li>
-                        <li>🏥 客户分析 (医院、科室、医生)</li>
-                        <li>🥊 竞品对比 (市场份额、价格、增长率)</li>
-                        <li>📋 报告生成 (自动生成分析报告)</li>
-                        <li>🔮 预测分析 (销售预测、异常检测)</li>
-                    </ul>
+                <div class="input-area">
+                    <input type="text" class="chat-input" id="chatInput" placeholder="输入您的问题..." onkeyup="if(event.key==='Enter') sendMessage()">
+                    <button class="send-btn" onclick="sendMessage()">发送</button>
                 </div>
+            </div>
+
+            <div style="margin-top: 24px; padding: 16px; background: rgba(15, 23, 42, 0.6); border-radius: 8px;">
+                <h4 style="color: #f1f5f9; margin-bottom: 12px;">📊 支持的查询类型</h4>
+                <ul style="color: #94a3b8; line-height: 1.8;">
+                    <li>💰 销售数据查询 (销售额、销售量、增长率)</li>
+                    <li>📈 趋势分析 (产品、区域、时间维度)</li>
+                    <li>🏥 客户分析 (医院、科室、医生)</li>
+                    <li>🥊 竞品对比 (市场份额、价格、增长率)</li>
+                    <li>📋 报告生成 (自动生成分析报告)</li>
+                    <li>🔮 预测分析 (销售预测、异常检测)</li>
+                </ul>
             </div>
         </div>
     </div>
 
     <script>
-        const { createApp } = Vue;
-        createApp({
-            data() {
-                return {
-                    loading: false,
-                    userName: '管理员',
-                    token: localStorage.getItem('token'),
-                    userInput: '',
-                    messages: [
-                        {role: 'assistant', content: '您好!我是AI智能助手,可以帮您查询和分析数据。您可以问我关于销售、趋势、竞品等问题,或者让我生成分析报告。'}
-                    ]
-                };
-            },
-            mounted() {
-                if (!this.token) { window.location.href = 'login.html'; }
-            },
-            methods: {
-                logout() { localStorage.removeItem('token'); window.location.href = 'login.html'; },
-                askQuestion(question) {
-                    this.userInput = question;
-                    this.sendMessage();
-                },
-                sendMessage() {
-                    if (!this.userInput.trim()) return;
+        // 检查登录状态
+        window.addEventListener('load', function() {
+            var token = localStorage.getItem('token');
+            if (!token) {
+                window.location.href = window.location.pathname.replace('assistant.html', 'login-simple.html');
+                return;
+            }
 
-                    this.messages.push({role: 'user', content: this.userInput});
-                    const question = this.userInput;
-                    this.userInput = '';
-                    this.loading = true;
-
-                    setTimeout(() => {
-                        this.loading = false;
-                        this.messages.push({role: 'assistant', content: this.getResponse(question)});
-                        this.$nextTick(() => {
-                            const container = this.$refs.messagesContainer;
-                            container.scrollTop = container.scrollHeight;
-                        });
-                    }, 1000);
-                },
-                getResponse(question) {
-                    if (question.includes('销售') || question.includes('趋势')) {
-                        return '根据最新数据,本月销售额为14,800万元,环比增长4.2%。主要增长动力来自阿莫西林胶囊和布洛芬缓释胶囊。华东和华南地区贡献最大。建议重点关注杭州和深圳市场。';
-                    } else if (question.includes('医院') || question.includes('客户')) {
-                        return '增长最快的医院是:\n1. 杭州市第一医院 (+28.5%)\n2. 深圳市人民医院 (+32.1%)\n3. 成都市华西医院 (+24.3%)\n\n建议将资源倾斜到这些高增长潜力医院。';
-                    } else if (question.includes('报告') || question.includes('生成')) {
-                        return '✅ 报告已生成!\n\n📊 本月销售分析报告:\n- 总销售额: 14,800万元 (+4.2%)\n- 销售量: 1,000万盒 (+3.8%)\n- TOP产品: 阿莫西林、布洛芬\n- TOP区域: 华东、华南\n\n报告已保存,可在"报表中心"查看详细版本。';
-                    } else if (question.includes('竞品')) {
-                        return '当前竞品格局:\n- 本公司市场份额: 24.0% (↑2.1%)\n- 竞品A: 26.0% (↓1.5%)\n- 竞品B: 21.0% (↑3.0%)\n\n我们在增长率方面领先,建议保持当前策略并加大杭州、深圳投入。';
-                    } else {
-                        return '我理解您的问题。基于当前数据,我建议您:\n\n1. 查看"市场洞察"仪表盘了解整体趋势\n2. 使用"竞品分析"模块对比竞争态势\n3. 查看"销售预测"了解未来趋势\n\n如需更详细的答案,请提供更多具体问题。';
-                    }
+            // 显示用户名
+            var userInfo = localStorage.getItem('userInfo');
+            if (userInfo) {
+                try {
+                    var user = JSON.parse(userInfo);
+                    document.getElementById('userName').textContent = user.name || user.username || '管理员';
+                } catch (e) {
+                    console.log('解析用户信息失败');
                 }
             }
-        }).mount('#app');
+        });
+
+        // 退出登录
+        function logout() {
+            localStorage.removeItem('token');
+            localStorage.removeItem('userInfo');
+            window.location.href = window.location.pathname.replace('assistant.html', 'login-simple.html');
+        }
+
+        // 提问
+        function askQuestion(question) {
+            document.getElementById('chatInput').value = question;
+            sendMessage();
+        }
+
+        // 发送消息
+        function sendMessage() {
+            var input = document.getElementById('chatInput');
+            var question = input.value.trim();
+
+            if (!question) return;
+
+            // 添加用户消息
+            addMessage('user', question);
+            input.value = '';
+
+            // 模拟AI回复
+            setTimeout(function() {
+                var response = getResponse(question);
+                addMessage('assistant', response);
+            }, 1000);
+        }
+
+        // 添加消息到聊天框
+        function addMessage(role, content) {
+            var messagesContainer = document.getElementById('chatMessages');
+            var messageDiv = document.createElement('div');
+            messageDiv.className = 'message ' + role;
+            messageDiv.innerHTML = `
+                <div style="font-weight: 600; margin-bottom: 4px; color: #f1f5f9;">${role === 'user' ? '你' : 'AI助手'}</div>
+                <div style="color: #cbd5e1;">${content.replace(/\n/g, '<br>')}</div>
+            `;
+            messagesContainer.appendChild(messageDiv);
+            messagesContainer.scrollTop = messagesContainer.scrollHeight;
+        }
+
+        // 获取AI回复
+        function getResponse(question) {
+            if (question.indexOf('销售') !== -1 || question.indexOf('趋势') !== -1) {
+                return '根据最新数据,本月销售额为14,800万元,环比增长4.2%。主要增长动力来自阿莫西林胶囊和布洛芬缓释胶囊。华东和华南地区贡献最大。建议重点关注杭州和深圳市场。';
+            } else if (question.indexOf('医院') !== -1 || question.indexOf('客户') !== -1) {
+                return '增长最快的医院是:\n1. 杭州市第一医院 (+28.5%)\n2. 深圳市人民医院 (+32.1%)\n3. 成都市华西医院 (+24.3%)\n\n建议将资源倾斜到这些高增长潜力医院。';
+            } else if (question.indexOf('报告') !== -1 || question.indexOf('生成') !== -1) {
+                return '✅ 报告已生成!\n\n📊 本月销售分析报告:\n- 总销售额: 14,800万元 (+4.2%)\n- 销售量: 1,000万盒 (+3.8%)\n- TOP产品: 阿莫西林、布洛芬\n- TOP区域: 华东、华南\n\n报告已保存,可在"报表中心"查看详细版本。';
+            } else if (question.indexOf('竞品') !== -1) {
+                return '当前竞品格局:\n- 本公司市场份额: 24.0% (↑2.1%)\n- 竞品A: 26.0% (↓1.5%)\n- 竞品B: 21.0% (↑3.0%)\n\n我们在增长率方面领先,建议保持当前策略并加大杭州、深圳投入。';
+            } else {
+                return '我理解您的问题。基于当前数据,我建议您:\n\n1. 查看"市场洞察"仪表盘了解整体趋势\n2. 使用"竞品分析"模块对比竞争态势\n3. 查看"销售预测"了解未来趋势\n\n如需更详细的答案,请提供更多具体问题。';
+            }
+        }
     </script>
 </body>
 </html>

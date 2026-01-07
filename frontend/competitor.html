@@ -4,174 +4,595 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>竞品分析 - 智能数据平台</title>
-    <script src="https://cdn.jsdelivr.net/npm/echarts@5.4.3/dist/echarts.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/vue@3.3.4/dist/vue.global.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/axios@1.6.2/dist/axios.min.js"></script>
-    <link rel="stylesheet" href="styles.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #0a0e27;
+            color: #e2e8f0;
+            min-height: 100vh;
+        }
+
+        .navbar {
+            background: rgba(15, 23, 42, 0.8);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(99, 102, 241, 0.2);
+            padding: 16px 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .nav-brand {
+            font-size: 22px;
+            font-weight: 700;
+            background: linear-gradient(135deg, #60a5fa 0%, #a78bfa 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .nav-menu {
+            display: flex;
+            gap: 8px;
+        }
+
+        .nav-item {
+            padding: 8px 16px;
+            color: #94a3b8;
+            text-decoration: none;
+            border-radius: 6px;
+            font-size: 14px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .nav-item:hover {
+            background: rgba(59, 130, 246, 0.1);
+            color: #e2e8f0;
+        }
+
+        .nav-item.active {
+            background: rgba(59, 130, 246, 0.15);
+            color: #60a5fa;
+        }
+
+        .nav-user {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .user-name {
+            color: #cbd5e1;
+            font-size: 14px;
+        }
+
+        .logout-btn {
+            padding: 6px 14px;
+            background: rgba(239, 68, 68, 0.15);
+            border: 1px solid rgba(239, 68, 68, 0.3);
+            border-radius: 6px;
+            color: #f87171;
+            cursor: pointer;
+            font-size: 13px;
+        }
+
+        .header {
+            background: linear-gradient(135deg, rgba(59, 130, 246, 0.15) 0%, rgba(139, 92, 246, 0.15) 100%);
+            border-bottom: 1px solid rgba(99, 102, 241, 0.3);
+            color: white;
+            padding: 24px 32px;
+        }
+
+        .header h1 {
+            font-size: 26px;
+            margin-bottom: 8px;
+            background: linear-gradient(135deg, #60a5fa 0%, #a78bfa 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-weight: 700;
+        }
+
+        .header p {
+            font-size: 14px;
+            color: #94a3b8;
+        }
+
+        .container {
+            padding: 28px;
+            max-width: 1600px;
+            margin: 0 auto;
+        }
+
+        .chart-row {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 24px;
+            margin-bottom: 24px;
+        }
+
+        .chart-card {
+            background: rgba(15, 23, 42, 0.6);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(99, 102, 241, 0.2);
+            padding: 24px;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .chart-card h3 {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 16px;
+            color: #f1f5f9;
+        }
+
+        .bar-chart {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .bar-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .bar-label {
+            width: 80px;
+            font-size: 13px;
+            color: #94a3b8;
+            text-align: right;
+        }
+
+        .bar-track {
+            flex: 1;
+            height: 32px;
+            background: rgba(30, 41, 59, 0.5);
+            border-radius: 6px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .bar-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #3b82f6, #8b5cf6);
+            border-radius: 6px;
+            transition: width 1s ease;
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            padding-right: 12px;
+        }
+
+        .bar-value {
+            color: white;
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+        .table-card {
+            background: rgba(15, 23, 42, 0.6);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(99, 102, 241, 0.2);
+            padding: 24px;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .table-card h3 {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 16px;
+            color: #f1f5f9;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            padding: 14px 18px;
+            text-align: left;
+            border-bottom: 1px solid rgba(99, 102, 241, 0.1);
+        }
+
+        th {
+            background: rgba(30, 41, 59, 0.5);
+            font-weight: 600;
+            font-size: 13px;
+            color: #94a3b8;
+            text-transform: uppercase;
+        }
+
+        td {
+            font-size: 14px;
+            color: #cbd5e1;
+        }
+
+        tr:hover td {
+            background: rgba(59, 130, 246, 0.05);
+        }
+
+        .tag {
+            display: inline-block;
+            padding: 5px 14px;
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .tag.high {
+            background: rgba(16, 185, 129, 0.15);
+            color: #10b981;
+            border: 1px solid rgba(16, 185, 129, 0.3);
+        }
+
+        .tag.medium {
+            background: rgba(59, 130, 246, 0.15);
+            color: #3b82f6;
+            border: 1px solid rgba(59, 130, 246, 0.3);
+        }
+
+        .tag.low {
+            background: rgba(249, 115, 22, 0.15);
+            color: #f97316;
+            border: 1px solid rgba(249, 115, 22, 0.3);
+        }
+
+        .competitor-comparison {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .competitor-row {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            padding: 16px;
+            background: rgba(30, 41, 59, 0.5);
+            border-radius: 8px;
+        }
+
+        .competitor-name {
+            width: 100px;
+            font-weight: 600;
+            color: #f1f5f9;
+        }
+
+        .competitor-metrics {
+            flex: 1;
+            display: flex;
+            gap: 12px;
+        }
+
+        .metric-bar {
+            flex: 1;
+        }
+
+        .metric-label {
+            font-size: 11px;
+            color: #94a3b8;
+            margin-bottom: 4px;
+        }
+
+        .metric-track {
+            height: 8px;
+            background: rgba(15, 23, 42, 0.5);
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .metric-fill {
+            height: 100%;
+            border-radius: 4px;
+            transition: width 1s ease;
+        }
+
+        .metric-fill.blue {
+            background: #3b82f6;
+        }
+
+        .metric-fill.purple {
+            background: #8b5cf6;
+        }
+
+        .metric-fill.cyan {
+            background: #06b6d4;
+        }
+
+        .metric-fill.red {
+            background: #ef4444;
+        }
+
+        .metric-fill.green {
+            background: #10b981;
+        }
+
+        @media (max-width: 768px) {
+            .chart-row {
+                grid-template-columns: 1fr;
+            }
+
+            .header h1 {
+                font-size: 20px;
+            }
+
+            .container {
+                padding: 16px;
+            }
+        }
+    </style>
 </head>
 <body>
-    <div id="app">
-        <nav class="navbar">
-            <div class="nav-brand">DATA INSIGHTS</div>
-            <div class="nav-menu">
-                <a class="nav-item" href="dashboard.html">市场洞察</a>
-                <a class="nav-item active" href="competitor.html">竞品分析</a>
-                <a class="nav-item" href="forecast.html">销售预测</a>
-                <a class="nav-item" href="customer.html">客户洞察</a>
-                <a class="nav-item" href="price.html">价格分析</a>
-                <a class="nav-item" href="supply-chain.html">智能供应链</a>
-                <a class="nav-item" href="medical-performance.html">医疗效能</a>
-                <a class="nav-item" href="investment.html">投资情报</a>
-                <a class="nav-item" href="rwa.html">研发支持</a>
-                <a class="nav-item" href="assistant.html">AI助手</a>
-            </div>
-            <div class="nav-user">
-                <span class="user-name">{{ userName }}</span>
-                <button class="logout-btn" @click="logout">退出登录</button>
-            </div>
-        </nav>
+    <div class="navbar">
+        <div class="nav-brand">DATA INSIGHTS</div>
+        <div class="nav-menu">
+            <a class="nav-item" href="dashboard.html">市场洞察</a>
+            <a class="nav-item active" href="competitor.html">竞品分析</a>
+            <a class="nav-item" href="forecast.html">销售预测</a>
+            <a class="nav-item" href="customer.html">客户洞察</a>
+            <a class="nav-item" href="price.html">价格分析</a>
+            <a class="nav-item" href="supply-chain.html">智能供应链</a>
+            <a class="nav-item" href="medical-performance.html">医疗效能</a>
+            <a class="nav-item" href="investment.html">投资情报</a>
+            <a class="nav-item" href="rwa.html">研发支持</a>
+            <a class="nav-item" href="assistant.html">AI助手</a>
+        </div>
+        <div class="nav-user">
+            <span class="user-name" id="userName">管理员</span>
+            <button class="logout-btn" onclick="logout()">退出</button>
+        </div>
+    </div>
 
-        <div class="header">
-            <h1>竞品分析</h1>
-            <p>多维度竞品对比与市场定位分析</p>
+    <div class="header">
+        <h1>竞品分析</h1>
+        <p>多维度竞品对比与市场定位分析</p>
+    </div>
+
+    <div class="container">
+        <div class="chart-row">
+            <div class="chart-card">
+                <h3>竞品综合对比 (雷达图替代)</h3>
+                <div class="competitor-comparison">
+                    <div class="competitor-row">
+                        <div class="competitor-name">本公司</div>
+                        <div class="competitor-metrics">
+                            <div class="metric-bar">
+                                <div class="metric-label">市场份额 85分</div>
+                                <div class="metric-track">
+                                    <div class="metric-fill blue" style="width: 85%;"></div>
+                                </div>
+                            </div>
+                            <div class="metric-bar">
+                                <div class="metric-label">增长率 92分</div>
+                                <div class="metric-track">
+                                    <div class="metric-fill purple" style="width: 92%;"></div>
+                                </div>
+                            </div>
+                            <div class="metric-bar">
+                                <div class="metric-label">产品力 88分</div>
+                                <div class="metric-track">
+                                    <div class="metric-fill cyan" style="width: 88%;"></div>
+                                </div>
+                            </div>
+                            <div class="metric-bar">
+                                <div class="metric-label">价格力 78分</div>
+                                <div class="metric-track">
+                                    <div class="metric-fill green" style="width: 78%;"></div>
+                                </div>
+                            </div>
+                            <div class="metric-bar">
+                                <div class="metric-label">渠道力 82分</div>
+                                <div class="metric-track">
+                                    <div class="metric-fill red" style="width: 82%;"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="competitor-row">
+                        <div class="competitor-name">竞品A</div>
+                        <div class="competitor-metrics">
+                            <div class="metric-bar">
+                                <div class="metric-label">市场份额 90分</div>
+                                <div class="metric-track">
+                                    <div class="metric-fill blue" style="width: 90%;"></div>
+                                </div>
+                            </div>
+                            <div class="metric-bar">
+                                <div class="metric-label">增长率 75分</div>
+                                <div class="metric-track">
+                                    <div class="metric-fill purple" style="width: 75%;"></div>
+                                </div>
+                            </div>
+                            <div class="metric-bar">
+                                <div class="metric-label">产品力 85分</div>
+                                <div class="metric-track">
+                                    <div class="metric-fill cyan" style="width: 85%;"></div>
+                                </div>
+                            </div>
+                            <div class="metric-bar">
+                                <div class="metric-label">价格力 80分</div>
+                                <div class="metric-track">
+                                    <div class="metric-fill green" style="width: 80%;"></div>
+                                </div>
+                            </div>
+                            <div class="metric-bar">
+                                <div class="metric-label">渠道力 88分</div>
+                                <div class="metric-track">
+                                    <div class="metric-fill red" style="width: 88%;"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="competitor-row">
+                        <div class="competitor-name">竞品B</div>
+                        <div class="competitor-metrics">
+                            <div class="metric-bar">
+                                <div class="metric-label">市场份额 72分</div>
+                                <div class="metric-track">
+                                    <div class="metric-fill blue" style="width: 72%;"></div>
+                                </div>
+                            </div>
+                            <div class="metric-bar">
+                                <div class="metric-label">增长率 88分</div>
+                                <div class="metric-track">
+                                    <div class="metric-fill purple" style="width: 88%;"></div>
+                                </div>
+                            </div>
+                            <div class="metric-bar">
+                                <div class="metric-label">产品力 78分</div>
+                                <div class="metric-track">
+                                    <div class="metric-fill cyan" style="width: 78%;"></div>
+                                </div>
+                            </div>
+                            <div class="metric-bar">
+                                <div class="metric-label">价格力 85分</div>
+                                <div class="metric-track">
+                                    <div class="metric-fill green" style="width: 85%;"></div>
+                                </div>
+                            </div>
+                            <div class="metric-bar">
+                                <div class="metric-label">渠道力 70分</div>
+                                <div class="metric-track">
+                                    <div class="metric-fill red" style="width: 70%;"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="chart-card">
+                <h3>区域市场表现</h3>
+                <div class="bar-chart">
+                    <div class="bar-item">
+                        <div class="bar-label">华东</div>
+                        <div class="bar-track">
+                            <div class="bar-fill" style="width: 95%;">
+                                <span class="bar-value">本公司 28%</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="bar-item">
+                        <div class="bar-label">华南</div>
+                        <div class="bar-track">
+                            <div class="bar-fill" style="width: 88%;">
+                                <span class="bar-value">本公司 25%</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="bar-item">
+                        <div class="bar-label">华北</div>
+                        <div class="bar-track">
+                            <div class="bar-fill" style="width: 75%;">
+                                <span class="bar-value">本公司 20%</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="bar-item">
+                        <div class="bar-label">西南</div>
+                        <div class="bar-track">
+                            <div class="bar-fill" style="width: 62%;">
+                                <span class="bar-value">本公司 15%</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
 
-        <div class="container">
-            <div v-if="loading" class="loading">数据加载中...</div>
-
-            <div v-else>
-                <div class="chart-row">
-                    <div class="chart-card">
-                        <h3>竞品雷达图对比</h3>
-                        <div ref="radarChart" class="chart-container"></div>
-                    </div>
-                    <div class="chart-card">
-                        <h3>区域市场表现</h3>
-                        <div ref="regionalChart" class="chart-container"></div>
-                    </div>
-                </div>
-
-                <div class="table-card">
-                    <h3>竞品列表及市场份额</h3>
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>竞品名称</th>
-                                <th>市场份额</th>
-                                <th>增长率</th>
-                                <th>产品数量</th>
-                                <th>竞争态势</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr v-for="comp in competitors" :key="comp.id">
-                                <td>{{ comp.name }}</td>
-                                <td>{{ comp.market_share }}%</td>
-                                <td :style="{color: comp.growth > 0 ? '#10b981' : '#ef4444'}">
-                                    {{ comp.growth > 0 ? '+' : '' }}{{ comp.growth }}%
-                                </td>
-                                <td>{{ comp.products }}个</td>
-                                <td>
-                                    <span class="tag" :class="comp.market_share > 20 ? 'high' : comp.market_share > 15 ? 'medium' : 'low'">
-                                        {{ comp.market_share > 20 ? '强劲' : comp.market_share > 15 ? '中等' : '一般' }}
-                                    </span>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
+        <div class="table-card">
+            <h3>竞品列表及市场份额</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>竞品名称</th>
+                        <th>市场份额</th>
+                        <th>增长率</th>
+                        <th>产品数量</th>
+                        <th>竞争态势</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>本公司</td>
+                        <td>24.0%</td>
+                        <td style="color: #10b981;">+2.1%</td>
+                        <td>15个</td>
+                        <td><span class="tag high">强劲</span></td>
+                    </tr>
+                    <tr>
+                        <td>竞品A</td>
+                        <td>26.0%</td>
+                        <td style="color: #ef4444;">-1.5%</td>
+                        <td>18个</td>
+                        <td><span class="tag high">强劲</span></td>
+                    </tr>
+                    <tr>
+                        <td>竞品B</td>
+                        <td>21.0%</td>
+                        <td style="color: #10b981;">+3.0%</td>
+                        <td>12个</td>
+                        <td><span class="tag medium">中等</span></td>
+                    </tr>
+                    <tr>
+                        <td>竞品C</td>
+                        <td>16.5%</td>
+                        <td style="color: #10b981;">+1.8%</td>
+                        <td>10个</td>
+                        <td><span class="tag medium">中等</span></td>
+                    </tr>
+                    <tr>
+                        <td>竞品D</td>
+                        <td>12.5%</td>
+                        <td style="color: #94a3b8;">0.0%</td>
+                        <td>8个</td>
+                        <td><span class="tag low">一般</span></td>
+                    </tr>
+                </tbody>
+            </table>
         </div>
     </div>
 
     <script>
-        const { createApp } = Vue;
-        const API_BASE = 'http://localhost:8000';
+        // 检查登录状态
+        window.addEventListener('load', function() {
+            var token = localStorage.getItem('token');
+            if (!token) {
+                window.location.href = window.location.pathname.replace('competitor.html', 'login-simple.html');
+                return;
+            }
 
-        createApp({
-            data() {
-                return {
-                    loading: true,
-                    userName: '管理员',
-                    token: localStorage.getItem('token'),
-                    competitors: []
-                };
-            },
-            mounted() {
-                if (!this.token) {
-                    window.location.href = 'login.html';
-                    return;
-                }
-                this.loadData();
-            },
-            methods: {
-                logout() {
-                    localStorage.removeItem('token');
-                    window.location.href = 'login.html';
-                },
-                async loadData() {
-                    try {
-                        const [compRes, compListRes] = await Promise.all([
-                            axios.get(`${API_BASE}/api/competitor/comparison`, {
-                                headers: { Authorization: `Bearer ${this.token}` }
-                            }),
-                            axios.get(`${API_BASE}/api/competitor/list`, {
-                                headers: { Authorization: `Bearer ${this.token}` }
-                            })
-                        ]);
-
-                        this.competitors = compListRes.data.data;
-                        this.comparisonData = compRes.data;
-
-                        this.loading = false;
-                        this.$nextTick(() => {
-                            this.renderRadarChart();
-                        });
-                    } catch (error) {
-                        console.error(error);
-                        if (error.response?.status === 401) this.logout();
-                    }
-                },
-                renderRadarChart() {
-                    const chart = echarts.init(this.$refs.radarChart);
-                    const data = this.comparisonData;
-
-                    const option = {
-                        tooltip: {
-                            backgroundColor: 'rgba(15, 23, 42, 0.95)',
-                            borderColor: 'rgba(99, 102, 241, 0.3)',
-                            textStyle: { color: '#e2e8f0' }
-                        },
-                        legend: {
-                            data: data.series.map(s => s.name),
-                            top: 10,
-                            textStyle: { color: '#94a3b8' }
-                        },
-                        radar: {
-                            indicator: data.indicators.map(name => ({ name, max: 100 })),
-                            shape: 'circle',
-                            splitNumber: 5,
-                            axisName: { color: '#94a3b8' },
-                            splitLine: { lineStyle: { color: 'rgba(99, 102, 241, 0.2)' } },
-                            splitArea: { areaStyle: { color: ['rgba(59, 130, 246, 0.05)', 'rgba(139, 92, 246, 0.05)'] } },
-                            axisLine: { lineStyle: { color: 'rgba(99, 102, 241, 0.3)' } }
-                        },
-                        series: [{
-                            name: '竞品对比',
-                            type: 'radar',
-                            data: data.series.map((s, i) => ({
-                                value: s.value,
-                                name: s.name,
-                                itemStyle: { color: ['#3b82f6', '#8b5cf6', '#06b6d4'][i] },
-                                areaStyle: { opacity: 0.3 }
-                            }))
-                        }]
-                    };
-                    chart.setOption(option);
-                    window.addEventListener('resize', () => chart.resize());
+            // 显示用户名
+            var userInfo = localStorage.getItem('userInfo');
+            if (userInfo) {
+                try {
+                    var user = JSON.parse(userInfo);
+                    document.getElementById('userName').textContent = user.name || user.username || '管理员';
+                } catch (e) {
+                    console.log('解析用户信息失败');
                 }
             }
-        }).mount('#app');
+        });
+
+        // 退出登录
+        function logout() {
+            localStorage.removeItem('token');
+            localStorage.removeItem('userInfo');
+            window.location.href = window.location.pathname.replace('competitor.html', 'login-simple.html');
+        }
     </script>
 </body>
 </html>

@@ -4,174 +4,42 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>价格分析 - 智能数据平台</title>
-    <script src="https://cdn.jsdelivr.net/npm/echarts@5.4.3/dist/echarts.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/vue@3.3.4/dist/vue.global.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/axios@1.6.2/dist/axios.min.js"></script>
-    <link rel="stylesheet" href="styles.css">
+    <style>* { margin: 0; padding: 0; box-sizing: border-box; } body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #0a0e27; color: #e2e8f0; min-height: 100vh; } .navbar { background: rgba(15, 23, 42, 0.8); backdrop-filter: blur(10px); border-bottom: 1px solid rgba(99, 102, 241, 0.2); padding: 16px 24px; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 100; } .nav-brand { font-size: 22px; font-weight: 700; background: linear-gradient(135deg, #60a5fa 0%, #a78bfa 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; } .nav-menu { display: flex; gap: 8px; flex-wrap: wrap; } .nav-item { padding: 8px 12px; color: #94a3b8; text-decoration: none; border-radius: 6px; font-size: 13px; font-weight: 500; transition: all 0.3s ease; cursor: pointer; white-space: nowrap; } .nav-item:hover { background: rgba(59, 130, 246, 0.1); color: #e2e8f0; } .nav-item.active { background: rgba(59, 130, 246, 0.15); color: #60a5fa; } .nav-user { display: flex; align-items: center; gap: 12px; } .user-name { color: #cbd5e1; font-size: 14px; } .logout-btn { padding: 6px 14px; background: rgba(239, 68, 68, 0.15); border: 1px solid rgba(239, 68, 68, 0.3); border-radius: 6px; color: #f87171; cursor: pointer; font-size: 13px; } .header { background: linear-gradient(135deg, rgba(59, 130, 246, 0.15) 0%, rgba(139, 92, 246, 0.15) 100%); border-bottom: 1px solid rgba(99, 102, 241, 0.3); color: white; padding: 24px 32px; } .header h1 { font-size: 26px; margin-bottom: 8px; background: linear-gradient(135deg, #60a5fa 0%, #a78bfa 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; font-weight: 700; } .header p { font-size: 14px; color: #94a3b8; } .container { padding: 28px; max-width: 1600px; margin: 0 auto; } .chart-card { background: rgba(15, 23, 42, 0.6); backdrop-filter: blur(10px); border: 1px solid rgba(99, 102, 241, 0.2); padding: 24px; border-radius: 12px; margin-bottom: 24px; box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3); } .chart-card h3 { font-size: 16px; font-weight: 600; margin-bottom: 16px; color: #f1f5f9; } .bar-chart { display: flex; flex-direction: column; gap: 16px; } .bar-item { display: flex; align-items: center; gap: 12px; } .bar-label { width: 80px; font-size: 13px; color: #94a3b8; text-align: right; } .bar-track { flex: 1; height: 32px; background: rgba(30, 41, 59, 0.5); border-radius: 6px; overflow: hidden; position: relative; } .bar-fill { height: 100%; background: linear-gradient(90deg, #3b82f6, #8b5cf6); border-radius: 6px; transition: width 1s ease; display: flex; align-items: center; justify-content: flex-end; padding-right: 12px; } .bar-value { color: white; font-size: 13px; font-weight: 600; } .table-card { background: rgba(15, 23, 42, 0.6); backdrop-filter: blur(10px); border: 1px solid rgba(99, 102, 241, 0.2); padding: 24px; border-radius: 12px; box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3); } .table-card h3 { font-size: 16px; font-weight: 600; margin-bottom: 16px; color: #f1f5f9; } table { width: 100%; border-collapse: collapse; } th, td { padding: 14px 18px; text-align: left; border-bottom: 1px solid rgba(99, 102, 241, 0.1); } th { background: rgba(30, 41, 59, 0.5); font-weight: 600; font-size: 13px; color: #94a3b8; text-transform: uppercase; } td { font-size: 14px; color: #cbd5e1; } tr:hover td { background: rgba(59, 130, 246, 0.05); } .tag { display: inline-block; padding: 5px 14px; border-radius: 6px; font-size: 12px; font-weight: 600; } .tag.high { background: rgba(16, 185, 129, 0.15); color: #10b981; border: 1px solid rgba(16, 185, 129, 0.3); } .tag.medium { background: rgba(59, 130, 246, 0.15); color: #3b82f6; border: 1px solid rgba(59, 130, 246, 0.3); } .tag.low { background: rgba(249, 115, 22, 0.15); color: #f97316; border: 1px solid rgba(249, 115, 22, 0.3); }</style>
 </head>
 <body>
-    <div id="app">
-        <nav class="navbar">
-            <div class="nav-brand">DATA INSIGHTS</div>
-            <div class="nav-menu">
-                <a class="nav-item" href="dashboard.html">市场洞察</a>
-                <a class="nav-item" href="competitor.html">竞品分析</a>
-                <a class="nav-item" href="forecast.html">销售预测</a>
-                <a class="nav-item" href="customer.html">客户洞察</a>
-                <a class="nav-item active" href="price.html">价格分析</a>
-                <a class="nav-item" href="supply-chain.html">智能供应链</a>
-                <a class="nav-item" href="medical-performance.html">医疗效能</a>
-                <a class="nav-item" href="investment.html">投资情报</a>
-                <a class="nav-item" href="rwa.html">研发支持</a>
-                <a class="nav-item" href="assistant.html">AI助手</a>
+    <div class="navbar">
+        <div class="nav-brand">DATA INSIGHTS</div>
+        <div class="nav-menu"><a class="nav-item" href="dashboard.html">市场洞察</a><a class="nav-item" href="competitor.html">竞品分析</a><a class="nav-item active" class="nav-item active" href="price.html">价格分析</a><a class="nav-item" href="customer.html">客户洞察</a><a class="nav-item" class="nav-item active" href="price.html">价格分析</a><a class="nav-item" href="supply-chain.html">智能供应链</a><a class="nav-item" href="medical-performance.html">医疗效能</a><a class="nav-item" href="investment.html">投资情报</a><a class="nav-item" href="rwa.html">研发支持</a><a class="nav-item" href="assistant.html">AI助手</a></div>
+        <div class="nav-user"><span class="user-name" id="userName">管理员</span><button class="logout-btn" onclick="logout()">退出</button></div>
+    </div>
+    <div class="header">
+        <h1>价格分析</h1>
+        <p>基于AI产品的智能价格分析与趋势分析</p>
+    </div>
+    <div class="container">
+        <div class="chart-card">
+            <h3>📈 价格趋势对比</h3>
+            <div class="bar-chart">
+                <div class="bar-item"><div class="bar-label">本公司</div><div class="bar-track"><div class="bar-fill" style="width: 75%;"><span class="bar-value">28.5元</span></div></div></div>
+                <div class="bar-item"><div class="bar-label">竞品A</div><div class="bar-track"><div class="bar-fill" style="width: 78%;"><span class="bar-value">32.0元</span></div></div></div>
+                <div class="bar-item"><div class="bar-label">竞品B</div><div class="bar-track"><div class="bar-fill" style="width: 82%;"><span class="bar-value">25.8元</span></div></div></div>
+                <div class="bar-item"><div class="bar-label">竞品C</div><div class="bar-track"><div class="bar-fill" style="width: 85%;"><span class="bar-value">29.2元</span></div></div></div>
+                <div class="bar-item"><div class="bar-label">竞品D</div><div class="bar-track"><div class="bar-fill" style="width: 88%;"><span class="bar-value">31.5元</span></div></div></div>
+                <div class="bar-item"><div class="bar-label">竞品E</div><div class="bar-track"><div class="bar-fill" style="width: 92%;"><span class="bar-value">27.8元</span></div></div></div>
             </div>
-            <div class="nav-user">
-                <span class="user-name">{{ userName }}</span>
-                <button class="logout-btn" @click="logout">退出登录</button>
-            </div>
-        </nav>
-
-        <div class="header">
-            <h1>价格分析</h1>
-            <p>产品价格趋势与弹性分析</p>
         </div>
-
-        <div class="container">
-            <div v-if="loading" class="loading">数据加载中...</div>
-
-            <div v-else>
-                <div class="chart-card" style="margin-bottom: 24px;">
-                    <h3>价格趋势对比</h3>
-                    <div ref="priceChart" style="width: 100%; height: 400px;"></div>
-                </div>
-
-                <div class="table-card">
-                    <h3>价格弹性分析</h3>
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>产品名称</th>
-                                <th>弹性系数</th>
-                                <th>解读</th>
-                                <th>建议</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr v-for="prod in products" :key="prod.name">
-                                <td>{{ prod.name }}</td>
-                                <td>{{ prod.elasticity }}</td>
-                                <td>{{ prod.interpretation }}</td>
-                                <td>
-                                    <span class="tag" :class="Math.abs(prod.elasticity) > 1 ? 'high' : 'medium'">
-                                        {{ Math.abs(prod.elasticity) > 1 ? '敏感' : '不敏感' }}
-                                    </span>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
+        <div class="table-card">
+            <h3>价格弹性分析</h3>
+            <table>
+                <thead><tr><th>产品</th><th>弹性系数</th><th>解读</th><th>推荐度</th></tr></thead>
+                <tbody>
+                    <tr><td>阿莫西林</td><td>-1.25</td><td>富有弹性</td><td><span class="tag high">推荐</span></td></tr>
+                    <tr><td>布洛芬</td><td>-0.85</td><td>缺乏弹性</td><td><span class="tag high">不敏感</span></td></tr>
+                    <tr><td>奥美拉唑</td><td>-1.42</td><td>富有弹性</td><td><span class="tag high">敏感</span></td></tr>
+                </tbody>
+            </table>
         </div>
     </div>
-
-    <script>
-        const { createApp } = Vue;
-        const API_BASE = 'http://localhost:8000';
-
-        createApp({
-            data() {
-                return {
-                    loading: true,
-                    userName: '管理员',
-                    token: localStorage.getItem('token'),
-                    products: [],
-                    priceData: {}
-                };
-            },
-            mounted() {
-                if (!this.token) {
-                    window.location.href = 'login.html';
-                    return;
-                }
-                this.loadData();
-            },
-            methods: {
-                logout() {
-                    localStorage.removeItem('token');
-                    window.location.href = 'login.html';
-                },
-                async loadData() {
-                    try {
-                        const [priceRes, elasticityRes] = await Promise.all([
-                            axios.get(`${API_BASE}/api/price/trend`, {
-                                headers: { Authorization: `Bearer ${this.token}` }
-                            }),
-                            axios.get(`${API_BASE}/api/price/elasticity`, {
-                                headers: { Authorization: `Bearer ${this.token}` }
-                            })
-                        ]);
-
-                        this.priceData = priceRes.data;
-                        this.products = elasticityRes.data.products;
-
-                        this.loading = false;
-                        this.$nextTick(() => {
-                            this.renderPriceChart();
-                        });
-                    } catch (error) {
-                        console.error(error);
-                        if (error.response?.status === 401) this.logout();
-                    }
-                },
-                renderPriceChart() {
-                    const chart = echarts.init(this.$refs.priceChart);
-                    const data = this.priceData;
-
-                    const option = {
-                        tooltip: {
-                            trigger: 'axis',
-                            backgroundColor: 'rgba(15, 23, 42, 0.95)',
-                            borderColor: 'rgba(99, 102, 241, 0.3)',
-                            textStyle: { color: '#e2e8f0' }
-                        },
-                        legend: {
-                            data: data.series.map(s => s.name),
-                            top: 10,
-                            textStyle: { color: '#94a3b8' }
-                        },
-                        grid: {
-                            left: '3%',
-                            right: '4%',
-                            bottom: '3%',
-                            containLabel: true
-                        },
-                        xAxis: {
-                            type: 'category',
-                            data: data.months,
-                            axisLine: { lineStyle: { color: 'rgba(99, 102, 241, 0.3)' } },
-                            axisLabel: { color: '#94a3b8', rotate: 45 }
-                        },
-                        yAxis: {
-                            type: 'value',
-                            name: '价格(元)',
-                            nameTextStyle: { color: '#94a3b8' },
-                            axisLine: { lineStyle: { color: 'rgba(99, 102, 241, 0.3)' } },
-                            axisLabel: { color: '#94a3b8' },
-                            splitLine: { lineStyle: { color: 'rgba(99, 102, 241, 0.1)' } }
-                        },
-                        series: data.series.map(s => ({
-                            name: s.name,
-                            type: 'line',
-                            smooth: true,
-                            data: s.data,
-                            itemStyle: { color: s.name === '本公司' ? '#3b82f6' : s.name === '竞品A' ? '#ef4444' : s.name === '竞品B' ? '#10b981' : '#94a3b8' }
-                        }))
-                    };
-                    chart.setOption(option);
-                    window.addEventListener('resize', () => chart.resize());
-                }
-            }
-        }).mount('#app');
-    </script>
+    <script>window.addEventListener('load', function() { var token = localStorage.getItem('token'); if (!token) { window.location.href = window.location.pathname.replace('price.html', 'login-simple.html'); return; } var userInfo = localStorage.getItem('userInfo'); if (userInfo) { try { var user = JSON.parse(userInfo); document.getElementById('userName').textContent = user.name || user.username || '管理员'; } catch (e) {} } }); function logout() { localStorage.removeItem('token'); localStorage.removeItem('userInfo'); window.location.href = window.location.pathname.replace('price.html', 'login-simple.html'); }</script>
 </body>
 </html>
