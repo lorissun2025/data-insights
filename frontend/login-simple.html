@@ -275,7 +275,8 @@
                     // 跳转到演示页面
                     setTimeout(function() {
                         console.log('Redirecting to demo.html...');
-                        window.location.href = 'demo.html?t=' + Date.now();
+                        // 使用绝对路径确保跳转正确
+                        window.location.href = window.location.pathname.replace('login-simple.html', 'demo.html') + '?t=' + Date.now();
                     }, 1000);
                 } else {
                     // 登录失败
@@ -300,7 +301,7 @@
             if (token) {
                 console.log('Already logged in, redirecting to demo...');
                 // 已登录,直接跳转到演示页面
-                window.location.href = 'demo.html?t=' + Date.now();
+                window.location.href = window.location.pathname.replace('login-simple.html', 'demo.html') + '?t=' + Date.now();
             }
         });
 

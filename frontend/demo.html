@@ -540,7 +540,7 @@
             if (!token) {
                 console.log('No token, redirecting to login');
                 // 未登录,跳转到登录页
-                window.location.href = 'login-simple.html';
+                window.location.href = window.location.pathname.replace('demo.html', 'login-simple.html');
                 return;
             }
 
@@ -561,9 +561,11 @@
 
         // 退出登录
         function logout() {
+            console.log('Logging out...');
             localStorage.removeItem('token');
             localStorage.removeItem('userInfo');
-            window.location.href = 'login-simple.html';
+            // 使用绝对路径跳转
+            window.location.href = window.location.pathname.replace('demo.html', 'login-simple.html');
         }
 
         // 动画效果
