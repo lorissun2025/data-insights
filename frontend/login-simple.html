@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>登录 - 智能数据平台</title>
+    <title>登录 - 智能数据平台 v3.1</title>
     <style>
         * {
             margin: 0;
@@ -192,7 +192,7 @@
     <div class="login-card">
         <div class="logo">
             <h1>DATA INSIGHTS</h1>
-            <p>智能数据平台</p>
+            <p>智能数据平台 v3.1</p>
         </div>
 
         <form id="loginForm">
@@ -274,9 +274,21 @@
 
                     // 跳转到演示页面
                     setTimeout(function() {
+                        var targetUrl = window.location.pathname.replace('login-simple.html', 'demo.html');
                         console.log('Redirecting to demo.html...');
+                        console.log('Current pathname:', window.location.pathname);
+                        console.log('Target URL:', targetUrl);
+
                         // 使用绝对路径确保跳转正确
-                        window.location.href = window.location.pathname.replace('login-simple.html', 'demo.html') + '?t=' + Date.now();
+                        window.location.href = targetUrl + '?t=' + Date.now();
+
+                        // 备用跳转方案
+                        setTimeout(function() {
+                            if (window.location.href.indexOf('demo.html') === -1) {
+                                console.log('Primary redirect failed, trying alternative...');
+                                window.location.replace(targetUrl);
+                            }
+                        }, 500);
                     }, 1000);
                 } else {
                     // 登录失败
