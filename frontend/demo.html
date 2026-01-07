@@ -531,8 +531,14 @@
     <script>
         // 检查登录状态
         window.addEventListener('load', function() {
+            console.log('Demo page loaded');
+            console.log('Current URL:', window.location.href);
+
             var token = localStorage.getItem('token');
+            console.log('Token exists:', !!token);
+
             if (!token) {
+                console.log('No token, redirecting to login');
                 // 未登录,跳转到登录页
                 window.location.href = 'login-simple.html';
                 return;
@@ -544,10 +550,13 @@
                 try {
                     var user = JSON.parse(userInfo);
                     document.getElementById('userName').textContent = user.name || user.username || '管理员';
+                    console.log('User name set:', document.getElementById('userName').textContent);
                 } catch (e) {
                     console.log('解析用户信息失败');
                 }
             }
+
+            console.log('Demo page initialization complete');
         });
 
         // 退出登录
@@ -560,6 +569,8 @@
         // 动画效果
         window.addEventListener('load', function() {
             var bars = document.querySelectorAll('.bar-fill');
+            console.log('Found bars:', bars.length);
+
             bars.forEach(function(bar, index) {
                 var width = bar.style.width;
                 bar.style.width = '0';

@@ -267,7 +267,7 @@
 
                     // 跳转到演示页面
                     setTimeout(function() {
-                        window.location.href = 'demo.html';
+                        window.location.href = 'demo.html?t=' + Date.now();
                     }, 1000);
                 } else {
                     // 登录失败
@@ -287,7 +287,7 @@
             var token = localStorage.getItem('token');
             if (token) {
                 // 已登录,直接跳转到演示页面
-                window.location.href = 'demo.html';
+                window.location.href = 'demo.html?t=' + Date.now();
             }
         });
 
