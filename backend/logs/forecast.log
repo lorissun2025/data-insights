@@ -1,4 +1,0 @@
-Traceback (most recent call last):
-  File "/Users/sunsensen/claude code/智能数据平台/backend/advanced_forecast.py", line 11, in <module>
-    import numpy as np
-ModuleNotFoundError: No module named 'numpy'
