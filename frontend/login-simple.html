@@ -265,9 +265,9 @@
                     messageDiv.className = 'message success';
                     messageDiv.style.display = 'block';
 
-                    // 跳转到主页面
+                    // 跳转到演示页面
                     setTimeout(function() {
-                        window.location.href = 'dashboard.html';
+                        window.location.href = 'demo.html';
                     }, 1000);
                 } else {
                     // 登录失败
@@ -286,8 +286,8 @@
         window.addEventListener('load', function() {
             var token = localStorage.getItem('token');
             if (token) {
-                // 已登录,直接跳转
-                window.location.href = 'dashboard.html';
+                // 已登录,直接跳转到演示页面
+                window.location.href = 'demo.html';
             }
         });
 
