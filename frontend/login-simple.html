@@ -272,10 +272,10 @@
                     messageDiv.className = 'message success';
                     messageDiv.style.display = 'block';
 
-                    // 跳转到演示页面
+                    // 跳转到主仪表盘
                     setTimeout(function() {
-                        var targetUrl = window.location.pathname.replace('login-simple.html', 'demo.html');
-                        console.log('Redirecting to demo.html...');
+                        var targetUrl = window.location.pathname.replace('login-simple.html', 'dashboard.html');
+                        console.log('Redirecting to dashboard.html...');
                         console.log('Current pathname:', window.location.pathname);
                         console.log('Target URL:', targetUrl);
 
@@ -284,7 +284,7 @@
 
                         // 备用跳转方案
                         setTimeout(function() {
-                            if (window.location.href.indexOf('demo.html') === -1) {
+                            if (window.location.href.indexOf('dashboard.html') === -1) {
                                 console.log('Primary redirect failed, trying alternative...');
                                 window.location.replace(targetUrl);
                             }
@@ -311,9 +311,9 @@
             console.log('Existing token:', token);
 
             if (token) {
-                console.log('Already logged in, redirecting to demo...');
-                // 已登录,直接跳转到演示页面
-                window.location.href = window.location.pathname.replace('login-simple.html', 'demo.html') + '?t=' + Date.now();
+                console.log('Already logged in, redirecting to dashboard...');
+                // 已登录,直接跳转到主仪表盘
+                window.location.href = window.location.pathname.replace('login-simple.html', 'dashboard.html') + '?t=' + Date.now();
             }
         });
 
