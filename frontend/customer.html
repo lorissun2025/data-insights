@@ -39,6 +39,47 @@
         .tag.high { background: rgba(16, 185, 129, 0.15); color: #10b981; border: 1px solid rgba(16, 185, 129, 0.3); }
         .tag.medium { background: rgba(59, 130, 246, 0.15); color: #3b82f6; border: 1px solid rgba(59, 130, 246, 0.3); }
         .tag.low { background: rgba(249, 115, 22, 0.15); color: #f97316; border: 1px solid rgba(249, 115, 22, 0.3); }
+        /* AI助手浮窗按钮 */
+        .ai-float-btn { position: fixed; bottom: 40px; right: 40px; width: 60px; height: 60px; background: linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%); border-radius: 50%; box-shadow: 0 4px 20px rgba(59, 130, 246, 0.4); cursor: pointer; z-index: 1000; display: flex; align-items: center; justify-content: center; transition: all 0.3s ease; animation: pulse 2s infinite; }
+        .ai-float-btn:hover { transform: scale(1.1); box-shadow: 0 6px 30px rgba(59, 130, 246, 0.6); }
+        @keyframes pulse { 0%, 100% { box-shadow: 0 4px 20px rgba(59, 130, 246, 0.4); } 50% { box-shadow: 0 4px 30px rgba(59, 130, 246, 0.8); } }
+        .ai-float-btn svg { width: 32px; height: 32px; fill: white; }
+        /* AI助手浮窗 */
+        .ai-float-window { position: fixed; bottom: 120px; right: 40px; width: 400px; height: 600px; max-height: calc(100vh - 160px); background: rgba(15, 23, 42, 0.95); backdrop-filter: blur(20px); border: 1px solid rgba(99, 102, 241, 0.3); border-radius: 16px; box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5); z-index: 999; display: none; flex-direction: column; overflow: hidden; }
+        .ai-float-window.active { display: flex; }
+        .ai-float-window.maximized { top: 0; right: 0; bottom: 0; left: 0; width: 100%; height: 100%; max-height: 100%; border-radius: 0; }
+        /* AI窗口头部 */
+        .ai-window-header { background: linear-gradient(135deg, rgba(59, 130, 246, 0.2) 0%, rgba(139, 92, 246, 0.2) 100%); border-bottom: 1px solid rgba(99, 102, 241, 0.3); padding: 16px 20px; display: flex; justify-content: space-between; align-items: center; cursor: move; }
+        .ai-window-title { font-size: 16px; font-weight: 600; background: linear-gradient(135deg, #60a5fa 0%, #a78bfa 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; display: flex; align-items: center; gap: 8px; }
+        .ai-window-controls { display: flex; gap: 8px; }
+        .ai-control-btn { width: 28px; height: 28px; border-radius: 6px; border: 1px solid rgba(99, 102, 241, 0.3); background: rgba(59, 130, 246, 0.1); color: #94a3b8; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 14px; transition: all 0.2s ease; }
+        .ai-control-btn:hover { background: rgba(59, 130, 246, 0.2); color: #e2e8f0; }
+        /* AI窗口内容区 */
+        .ai-window-content { flex: 1; overflow-y: auto; padding: 20px; }
+        .ai-chat-messages { display: flex; flex-direction: column; gap: 16px; }
+        .ai-message { display: flex; gap: 12px; align-items: flex-start; }
+        .ai-message.user { flex-direction: row-reverse; }
+        .ai-message-avatar { width: 32px; height: 32px; border-radius: 50%; background: linear-gradient(135deg, #3b82f6, #8b5cf6); display: flex; align-items: center; justify-content: center; font-size: 14px; flex-shrink: 0; }
+        .ai-message-content { background: rgba(30, 41, 59, 0.8); border: 1px solid rgba(99, 102, 241, 0.2); padding: 12px 16px; border-radius: 12px; max-width: 80%; font-size: 14px; line-height: 1.6; }
+        .ai-message.user .ai-message-content { background: rgba(59, 130, 246, 0.2); border-color: rgba(59, 130, 246, 0.3); }
+        /* AI输入区 */
+        .ai-window-input { border-top: 1px solid rgba(99, 102, 241, 0.2); padding: 16px 20px; display: flex; gap: 12px; }
+        .ai-input-field { flex: 1; background: rgba(30, 41, 59, 0.8); border: 1px solid rgba(99, 102, 241, 0.2); border-radius: 8px; padding: 12px 16px; color: #e2e8f0; font-size: 14px; outline: none; }
+        .ai-input-field:focus { border-color: #3b82f6; }
+        .ai-input-field::placeholder { color: #64748b; }
+        .ai-send-btn { padding: 12px 20px; background: linear-gradient(135deg, #3b82f6, #8b5cf6); border: none; border-radius: 8px; color: white; font-size: 14px; font-weight: 600; cursor: pointer; transition: all 0.2s ease; }
+        .ai-send-btn:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(59, 130, 246, 0.4); }
+        /* 快捷操作 */
+        .ai-quick-actions { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 16px; }
+        .ai-quick-action { padding: 8px 16px; background: rgba(59, 130, 246, 0.1); border: 1px solid rgba(59, 130, 246, 0.2); border-radius: 6px; color: #94a3b8; font-size: 13px; cursor: pointer; transition: all 0.2s ease; }
+        .ai-quick-action:hover { background: rgba(59, 130, 246, 0.2); border-color: rgba(59, 130, 246, 0.4); color: #e2e8f0; }
+        /* 滚动条样式 */
+        .ai-window-content::-webkit-scrollbar { width: 6px; }
+        .ai-window-content::-webkit-scrollbar-track { background: rgba(30, 41, 59, 0.5); }
+        .ai-window-content::-webkit-scrollbar-thumb { background: rgba(99, 102, 241, 0.3); border-radius: 3px; }
+        .ai-window-content::-webkit-scrollbar-thumb:hover { background: rgba(99, 102, 241, 0.5); }
+        /* 响应式 */
+        @media (max-width: 768px) { .ai-float-window { width: calc(100% - 32px); right: 16px; bottom: 120px; } .ai-float-btn { width: 50px; height: 50px; bottom: 20px; right: 20px; } }
     </style>
 </head>
 <body>
@@ -168,6 +209,128 @@
             localStorage.removeItem('token');
             localStorage.removeItem('userInfo');
             window.location.href = window.location.pathname.replace('customer.html', 'login-simple.html');
+        }
+
+        let isMaximized = false;
+
+        function toggleAIWindow() {
+            const window = document.getElementById('aiWindow');
+            window.classList.toggle('active');
+        }
+
+        function closeAIWindow() {
+            const window = document.getElementById('aiWindow');
+            window.classList.remove('active');
+            if (isMaximized) {
+                window.classList.remove('maximized');
+                isMaximized = false;
+            }
+        }
+
+        function maximizeAIWindow() {
+            const window = document.getElementById('aiWindow');
+            window.classList.toggle('maximized');
+            isMaximized = !isMaximized;
+        }
+
+        function sendMessage() {
+            const input = document.getElementById('aiInput');
+            const message = input.value.trim();
+            if (!message) return;
+
+            addMessage(message, 'user');
+            input.value = '';
+
+            setTimeout(() => {
+                const responses = [
+                    '好的，让我为您分析这个数据...',
+                    '根据历史数据分析，我发现了以下趋势...',
+                    '正在生成报告，请稍候...',
+                    '这是一个很好的问题！让我来帮您解答...',
+                    '基于您的需求，我建议关注以下几个方面...'
+                ];
+                const randomResponse = responses[Math.floor(Math.random() * responses.length)];
+                addMessage(randomResponse, 'ai');
+            }, 1000);
+        }
+
+        function sendQuickMessage(message) {
+            document.getElementById('aiInput').value = message;
+            sendMessage();
+        }
+
+        function addMessage(text, type) {
+            const messagesContainer = document.getElementById('chatMessages');
+            const messageDiv = document.createElement('div');
+            messageDiv.className = `ai-message ${type}`;
+
+            const avatar = document.createElement('div');
+            avatar.className = 'ai-message-avatar';
+            avatar.textContent = type === 'ai' ? 'AI' : '我';
+
+            const content = document.createElement('div');
+            content.className = 'ai-message-content';
+            content.innerHTML = text;
+
+            messageDiv.appendChild(avatar);
+            messageDiv.appendChild(content);
+            messagesContainer.appendChild(messageDiv);
+
+            const contentArea = document.querySelector('.ai-window-content');
+            contentArea.scrollTop = contentArea.scrollHeight;
+        }
+
+        function handleKeyPress(event) {
+            if (event.key === 'Enter') {
+                sendMessage();
+            }
+        }
+
+        let isDragging = false;
+        let currentX;
+        let currentY;
+        let initialX;
+        let initialY;
+        let xOffset = 0;
+        let yOffset = 0;
+
+        const aiWindow = document.getElementById('aiWindow');
+        const aiHeader = document.getElementById('aiHeader');
+
+        aiHeader.addEventListener('mousedown', dragStart);
+        document.addEventListener('mouseup', dragEnd);
+        document.addEventListener('mousemove', drag);
+
+        function dragStart(e) {
+            if (isMaximized) return;
+            initialX = e.clientX - xOffset;
+            initialY = e.clientY - yOffset;
+            if (e.target === aiHeader || aiHeader.contains(e.target)) {
+                if (!e.target.classList.contains('ai-control-btn')) {
+                    isDragging = true;
+                }
+            }
+        }
+
+        function dragEnd(e) {
+            initialX = currentX;
+            initialY = currentY;
+            isDragging = false;
+        }
+
+        function drag(e) {
+            if (isDragging) {
+                e.preventDefault();
+                currentX = e.clientX - initialX;
+                currentY = e.clientY - initialY;
+                xOffset = currentX;
+                yOffset = currentY;
+                setTranslate(currentX, currentY, aiWindow);
+            }
+        }
+
+        function setTranslate(xPos, yPos, el) {
+            el.style.transform = `translate(${xPos}px, ${yPos}px)`;
         }
     </script>
 

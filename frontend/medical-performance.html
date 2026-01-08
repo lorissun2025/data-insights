@@ -69,7 +69,129 @@
         </div>
         
     </div>
-    <script>window.addEventListener('load', function() { var token = localStorage.getItem('token'); if (!token) { window.location.href = window.location.pathname.replace('medical-performance.html', 'login-simple.html'); return; } var userInfo = localStorage.getItem('userInfo'); if (userInfo) { try { var user = JSON.parse(userInfo); document.getElementById('userName').textContent = user.name || user.username || '管理员'; } catch (e) {} } }); function logout() { localStorage.removeItem('token'); localStorage.removeItem('userInfo'); window.location.href = window.location.pathname.replace('medical-performance.html', 'login-simple.html'); }</script>
+    <script>window.addEventListener('load', function() { var token = localStorage.getItem('token'); if (!token) { window.location.href = window.location.pathname.replace('medical-performance.html', 'login-simple.html'); return; } var userInfo = localStorage.getItem('userInfo'); if (userInfo) { try { var user = JSON.parse(userInfo); document.getElementById('userName').textContent = user.name || user.username || '管理员'; } catch (e) {} } }); function logout() { localStorage.removeItem('token'); localStorage.removeItem('userInfo'); window.location.href = window.location.pathname.replace('medical-performance.html', 'login-simple.html'); }
+
+        let isMaximized = false;
+
+        function toggleAIWindow() {
+            const window = document.getElementById('aiWindow');
+            window.classList.toggle('active');
+        }
+
+        function closeAIWindow() {
+            const window = document.getElementById('aiWindow');
+            window.classList.remove('active');
+            if (isMaximized) {
+                window.classList.remove('maximized');
+                isMaximized = false;
+            }
+        }
+
+        function maximizeAIWindow() {
+            const window = document.getElementById('aiWindow');
+            window.classList.toggle('maximized');
+            isMaximized = !isMaximized;
+        }
+
+        function sendMessage() {
+            const input = document.getElementById('aiInput');
+            const message = input.value.trim();
+            if (!message) return;
+
+            addMessage(message, 'user');
+            input.value = '';
+
+            setTimeout(() => {
+                const responses = [
+                    '好的，让我为您分析这个数据...',
+                    '根据历史数据分析，我发现了以下趋势...',
+                    '正在生成报告，请稍候...',
+                    '这是一个很好的问题！让我来帮您解答...',
+                    '基于您的需求，我建议关注以下几个方面...'
+                ];
+                const randomResponse = responses[Math.floor(Math.random() * responses.length)];
+                addMessage(randomResponse, 'ai');
+            }, 1000);
+        }
+
+        function sendQuickMessage(message) {
+            document.getElementById('aiInput').value = message;
+            sendMessage();
+        }
+
+        function addMessage(text, type) {
+            const messagesContainer = document.getElementById('chatMessages');
+            const messageDiv = document.createElement('div');
+            messageDiv.className = `ai-message ${type}`;
+
+            const avatar = document.createElement('div');
+            avatar.className = 'ai-message-avatar';
+            avatar.textContent = type === 'ai' ? 'AI' : '我';
+
+            const content = document.createElement('div');
+            content.className = 'ai-message-content';
+            content.innerHTML = text;
+
+            messageDiv.appendChild(avatar);
+            messageDiv.appendChild(content);
+            messagesContainer.appendChild(messageDiv);
+
+            const contentArea = document.querySelector('.ai-window-content');
+            contentArea.scrollTop = contentArea.scrollHeight;
+        }
+
+        function handleKeyPress(event) {
+            if (event.key === 'Enter') {
+                sendMessage();
+            }
+        }
+
+        let isDragging = false;
+        let currentX;
+        let currentY;
+        let initialX;
+        let initialY;
+        let xOffset = 0;
+        let yOffset = 0;
+
+        const aiWindow = document.getElementById('aiWindow');
+        const aiHeader = document.getElementById('aiHeader');
+
+        aiHeader.addEventListener('mousedown', dragStart);
+        document.addEventListener('mouseup', dragEnd);
+        document.addEventListener('mousemove', drag);
+
+        function dragStart(e) {
+            if (isMaximized) return;
+            initialX = e.clientX - xOffset;
+            initialY = e.clientY - yOffset;
+            if (e.target === aiHeader || aiHeader.contains(e.target)) {
+                if (!e.target.classList.contains('ai-control-btn')) {
+                    isDragging = true;
+                }
+            }
+        }
+
+        function dragEnd(e) {
+            initialX = currentX;
+            initialY = currentY;
+            isDragging = false;
+        }
+
+        function drag(e) {
+            if (isDragging) {
+                e.preventDefault();
+                currentX = e.clientX - initialX;
+                currentY = e.clientY - initialY;
+                xOffset = currentX;
+                yOffset = currentY;
+                setTranslate(currentX, currentY, aiWindow);
+            }
+        }
+
+        function setTranslate(xPos, yPos, el) {
+            el.style.transform = `translate(${xPos}px, ${yPos}px)`;
+        }</script>
 
     <!-- AI助手浮窗按钮 -->
     <div class="ai-float-btn" onclick="toggleAIWindow()" title="AI助手">
