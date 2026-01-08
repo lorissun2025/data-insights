@@ -54,8 +54,7 @@
             <a class="nav-item" href="medical-performance.html">医疗效能</a>
             <a class="nav-item" href="investment.html">投资情报</a>
             <a class="nav-item" href="rwa.html">研发支持</a>
-            <a class="nav-item" href="assistant.html">AI助手</a>
-        </div>
+            </div>
         <div class="nav-user">
             <span class="user-name" id="userName">管理员</span>
             <button class="logout-btn" onclick="logout()">退出</button>
@@ -171,5 +170,51 @@
             window.location.href = window.location.pathname.replace('customer.html', 'login-simple.html');
         }
     </script>
+
+    <!-- AI助手浮窗按钮 -->
+    <div class="ai-float-btn" onclick="toggleAIWindow()" title="AI助手">
+        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path d="M12 2C6.48 2 2 6.48 2 12C2 17.52 6.48 22 12 22C17.52 22 22 17.52 22 12C22 6.48 17.52 2 12 2ZM12 6C13.66 6 15 7.34 15 9C15 10.66 13.66 12 12 12C10.34 12 9 10.66 9 9C9 7.34 10.34 6 12 6ZM12 18.2C9.5 18.2 7.29 16.92 6 15.03C6.03 13.09 10 12 12 12C14 12 17.97 13.09 18 15.03C16.71 16.92 14.5 18.2 12 18.2Z"/>
+        </svg>
+    </div>
+
+    <!-- AI助手浮窗 -->
+    <div class="ai-float-window" id="aiWindow">
+        <div class="ai-window-header" id="aiHeader">
+            <div class="ai-window-title">
+                <span>🤖</span>
+                <span>AI智能助手</span>
+            </div>
+            <div class="ai-window-controls">
+                <button class="ai-control-btn" onclick="maximizeAIWindow()" title="全屏">□</button>
+                <button class="ai-control-btn" onclick="closeAIWindow()" title="关闭">✕</button>
+            </div>
+        </div>
+        <div class="ai-window-content">
+            <div class="ai-chat-messages" id="chatMessages">
+                <div class="ai-message">
+                    <div class="ai-message-avatar">AI</div>
+                    <div class="ai-message-content">
+                        您好！我是AI智能助手，可以帮您：<br><br>
+                        🔍 数据分析<br>
+                        📊 报告生成<br>
+                        💡 智能问答<br>
+                        🎯 业务洞察<br><br>
+                        请问有什么可以帮您？
+                    </div>
+                </div>
+            </div>
+            <div class="ai-quick-actions">
+                <div class="ai-quick-action" onclick="sendQuickMessage('帮我分析销售趋势')">📈 分析销售趋势</div>
+                <div class="ai-quick-action" onclick="sendQuickMessage('生成月度报告')">📄 生成月度报告</div>
+                <div class="ai-quick-action" onclick="sendQuickMessage('竞品对比分析')">🔍 竞品对比</div>
+                <div class="ai-quick-action" onclick="sendQuickMessage('客户细分建议')">👥 客户细分</div>
+            </div>
+        </div>
+        <div class="ai-window-input">
+            <input type="text" class="ai-input-field" id="aiInput" placeholder="输入您的问题..." onkeypress="handleKeyPress(event)">
+            <button class="ai-send-btn" onclick="sendMessage()">发送</button>
+        </div>
+    </div>
 </body>
 </html>
