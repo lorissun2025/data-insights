@@ -680,16 +680,100 @@
             input.value = '';
 
             setTimeout(() => {
-                const responses = [
-                    '好的，让我为您分析这个数据...',
-                    '根据历史数据分析，我发现了以下趋势...',
-                    '正在生成报告，请稍候...',
-                    '这是一个很好的问题！让我来帮您解答...',
-                    '基于您的需求，我建议关注以下几个方面...'
-                ];
-                const randomResponse = responses[Math.floor(Math.random() * responses.length)];
-                addMessage(randomResponse, 'ai');
+                let response = '';
+
+                if (message.includes('竞品') || message.includes('对比')) {
+                    response = `🔍 <strong>竞品对比分析报告</strong><br><br>
+                    <strong>综合竞争力对比：</strong><br><br>
+                    1. <strong>本公司</strong> - 综合得分：85分<br>
+                    • 市场份额：24.0%（↑2.1%）<br>
+                    • 增长率：92分（优秀）<br>
+                    • 产品力：88分<br>
+                    • 渠道力：82分<br><br>
+                    2. <strong>竞品A</strong> - 综合得分：85.6分<br>
+                    • 市场份额：26.0%（↓1.5%）<br>
+                    • 增长率：75分（下滑）<br>
+                    • 产品力：85分<br>
+                    • 渠道力：88分<br><br>
+                    3. <strong>竞品B</strong> - 综合得分：78.6分<br>
+                    • 市场份额：21.0%（↑3.0%）<br>
+                    • 增长率：88分（强劲）<br>
+                    • 产品力：78分<br>
+                    • 渠道力：70分<br><br>
+                    <strong>结论：</strong>本公司增长率领先，建议保持优势，扩大市场份额。`;
+                } else if (message.includes('报告') || message.includes('生成')) {
+                    response = `📊 <strong>竞品分析月度报告</strong><br><br>
+                    <strong>一、市场格局</strong><br>
+                    • 本公司份额：24.0%（排名第二）<br>
+                    • 竞品A份额：26.0%（排名第一，但下滑）<br>
+                    • 竞品B份额：21.0%（快速追赶）<br><br>
+                    <strong>二、竞争优势</strong><br>
+                    ✅ 增长率最高：92分<br>
+                    ✅ 产品力强：88分<br>
+                    ✅ 市场表现稳定<br><br>
+                    <strong>三、区域表现</strong><br>
+                    • 华东：本公司领先（28%）<br>
+                    • 华南：本公司领先（25%）<br>
+                    • 华北：本公司第三（20%）<br><br>
+                    <strong>四、战略建议</strong><br>
+                    1. 继续保持增长势头<br>
+                    2. 加强华北市场投入<br>
+                    3. 关注竞品B的快速崛起`;
+                } else if (message.includes('市场') || message.includes('份额')) {
+                    response = `📈 <strong>市场份额分析</strong><br><br>
+                    <strong>当前市场排名：</strong><br><br>
+                    1. 竞品A：26.0%（↓1.5%）- 趋势下滑<br>
+                    2. <strong>本公司：24.0%（↑2.1%）</strong> - 快速增长<br>
+                    3. 竞品B：21.0%（↑3.0%）- 稳定增长<br>
+                    4. 竞品C：16.5%（↑1.8%）<br>
+                    5. 竞品D：12.5%（持平）<br><br>
+                    <strong>预测：</strong>按当前增速，预计6个月内可超越竞品A成为市场第一。`;
+                } else if (message.includes('威胁') || message.includes('风险')) {
+                    response = `⚠️ <strong>竞争威胁分析</strong><br><br>
+                    <strong>主要威胁：</strong><br><br>
+                    1. <strong>竞品B</strong>（最大威胁）<br>
+                    • 增长率：88分，增长强劲<br>
+                    • 市场份额快速提升：+3.0%<br>
+                    • 价格优势明显：85分<br>
+                    • 建议：密切关注其动向<br><br>
+                    2. <strong>竞品A</strong><br>
+                    • 虽然份额第一，但增长乏力<br>
+                    • 增长率下滑：-1.5%<br>
+                    • 渠道力强：88分<br><br>
+                    <strong>应对策略：</strong>保持增长率优势，快速抢占市场。`;
+                } else if (message.includes('策略') || message.includes('应对')) {
+                    response = `💡 <strong>竞争策略建议</strong><br><br>
+                    <strong>短期策略（1-3个月）：</strong><br>
+                    ✅ 发挥增长率优势，扩大市场份额<br>
+                    ✅ 加强华东、华南领先地位<br>
+                    ✅ 提升华北市场投入<br><br>
+                    <strong>中期策略（3-6个月）：</strong><br>
+                    ✅ 持续产品创新，保持产品力<br>
+                    ✅ 优化渠道布局，提升渠道力<br>
+                    ✅ 目标：超越竞品A成为第一<br><br>
+                    <strong>长期策略（6-12个月）：</strong><br>
+                    ✅ 建立品牌壁垒<br>
+                    ✅ 深化客户关系<br>
+                    ✅ 拓展新市场领域`;
+                } else {
+                    response = getGenericResponse('竞品分析');
+                }
+
+                addMessage(response, 'ai');
             }, 1000);
+        }
+
+        function getGenericResponse(pageName) {
+            return `我是${pageName}页面的AI助手，可以帮您：<br><br>
+            🔍 <strong>竞品对比</strong><br>
+            多维度对比竞品实力<br><br>
+            📊 <strong>市场份额</strong><br>
+            分析市场格局变化<br><br>
+            ⚠️ <strong>威胁识别</strong><br>
+            发现潜在竞争风险<br><br>
+            💡 <strong>策略建议</strong><br>
+            制定应对竞争策略<br><br>
+            请告诉我您想了解什么？`;
         }
 
         function sendQuickMessage(message) {
@@ -806,10 +890,10 @@
                 </div>
             </div>
             <div class="ai-quick-actions">
-                <div class="ai-quick-action" onclick="sendQuickMessage('帮我分析销售趋势')">📈 分析销售趋势</div>
-                <div class="ai-quick-action" onclick="sendQuickMessage('生成月度报告')">📄 生成月度报告</div>
                 <div class="ai-quick-action" onclick="sendQuickMessage('竞品对比分析')">🔍 竞品对比</div>
-                <div class="ai-quick-action" onclick="sendQuickMessage('客户细分建议')">👥 客户细分</div>
+                <div class="ai-quick-action" onclick="sendQuickMessage('生成月度报告')">📄 生成报告</div>
+                <div class="ai-quick-action" onclick="sendQuickMessage('市场份额分析')">📊 市场份额</div>
+                <div class="ai-quick-action" onclick="sendQuickMessage('竞争策略建议')">💡 应对策略</div>
             </div>
         </div>
         <div class="ai-window-input">

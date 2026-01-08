@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>研发决策支持 - 智能数据平台</title>
-    <style>* { margin: 0; padding: 0; box-sizing: border-box; } body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #0a0e27; color: #e2e8f0; min-height: 100vh; } .navbar { background: rgba(15, 23, 42, 0.8); backdrop-filter: blur(10px); border-bottom: 1px solid rgba(99, 102, 241, 0.2); padding: 16px 24px; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 100; } .nav-brand { font-size: 22px; font-weight: 700; background: linear-gradient(135deg, #60a5fa 0%, #a78bfa 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; } .nav-menu { display: flex; gap: 8px; flex-wrap: wrap; } .nav-item { padding: 8px 12px; color: #94a3b8; text-decoration: none; border-radius: 6px; font-size: 13px; font-weight: 500; transition: all 0.3s ease; cursor: pointer; white-space: nowrap; } .nav-item:hover { background: rgba(59, 130, 246, 0.1); color: #e2e8f0; } .nav-item.active { background: rgba(59, 130, 246, 0.15); color: #60a5fa; } .nav-user { display: flex; align-items: center; gap: 12px; } .user-name { color: #cbd5e1; font-size: 14px; } .logout-btn { padding: 6px 14px; background: rgba(239, 68, 68, 0.15); border: 1px solid rgba(239, 68, 68, 0.3); border-radius: 6px; color: #f87171; cursor: pointer; font-size: 13px; } .header { background: linear-gradient(135deg, rgba(59, 130, 246, 0.15) 0%, rgba(139, 92, 246, 0.15) 100%); border-bottom: 1px solid rgba(99, 102, 241, 0.3); color: white; padding: 24px 32px; } .header h1 { font-size: 26px; margin-bottom: 8px; background: linear-gradient(135deg, #60a5fa 0%, #a78bfa 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; font-weight: 700; } .header p { font-size: 14px; color: #94a3b8; } .container { padding: 28px; max-width: 1600px; margin: 0 auto; } .kpi-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; margin-bottom: 24px; } .kpi-card { background: rgba(15, 23, 42, 0.6); backdrop-filter: blur(10px); border: 1px solid rgba(99, 102, 241, 0.2); padding: 20px; border-radius: 12px; box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3); } .kpi-title { font-size: 13px; color: #94a3b8; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.5px; } .kpi-value { font-size: 32px; font-weight: 700; background: linear-gradient(135deg, #60a5fa 0%, #a78bfa 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 8px; } .kpi-growth { font-size: 13px; color: #10b981; } .chart-card { background: rgba(15, 23, 42, 0.6); backdrop-filter: blur(10px); border: 1px solid rgba(99, 102, 241, 0.2); padding: 24px; border-radius: 12px; margin-bottom: 24px; box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3); } .chart-card h3 { font-size: 16px; font-weight: 600; margin-bottom: 16px; color: #f1f5f9; } .table-card { background: rgba(15, 23, 42, 0.6); backdrop-filter: blur(10px); border: 1px solid rgba(99, 102, 241, 0.2); padding: 24px; border-radius: 12px; box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3); } .table-card h3 { font-size: 16px; font-weight: 600; margin-bottom: 16px; color: #f1f5f9; } table { width: 100%; border-collapse: collapse; } th, td { padding: 14px 18px; text-align: left; border-bottom: 1px solid rgba(99, 102, 241, 0.1); } th { background: rgba(30, 41, 59, 0.5); font-weight: 600; font-size: 13px; color: #94a3b8; text-transform: uppercase; } td { font-size: 14px; color: #cbd5e1; } tr:hover td { background: rgba(59, 130, 246, 0.05); } .tag { display: inline-block; padding: 5px 14px; border-radius: 6px; font-size: 12px; font-weight: 600; } .tag.high { background: rgba(16, 185, 129, 0.15); color: #10b981; border: 1px solid rgba(16, 185, 129, 0.3); } .tag.medium { background: rgba(59, 130, 246, 0.15); color: #3b82f6; border: 1px solid rgba(59, 130, 246, 0.3); }
+    <style>* { margin: 0; padding: 0; box-sizing: border-box; } body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #0a0e27; color: #e2e8f0; min-height: 100vh; } .navbar { background: rgba(15, 23, 42, 0.8); backdrop-filter: blur(10px); border-bottom: 1px solid rgba(99, 102, 241, 0.2); padding: 16px 24px; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 100; } .nav-brand { font-size: 22px; font-weight: 700; background: linear-gradient(135deg, #60a5fa 0%, #a78bfa 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; } .nav-menu { display: flex; gap: 8px; flex-wrap: wrap; } .nav-item { padding: 8px 12px; color: #94a3b8; text-decoration: none; border-radius: 6px; font-size: 13px; font-weight: 500; transition: all 0.3s ease; cursor: pointer; white-space: nowrap; } .nav-item:hover { background: rgba(59, 130, 246, 0.1); color: #e2e8f0; } .nav-item.active { background: rgba(59, 130, 246, 0.15); color: #60a5fa; } .nav-user { display: flex; align-items: center; gap: 12px; } .user-name { color: #cbd5e1; font-size: 14px; } .logout-btn { padding: 6px 14px; background: rgba(239, 68, 68, 0.15); border: 1px solid rgba(239, 68, 68, 0.3); border-radius: 6px; color: #f87171; cursor: pointer; font-size: 13px; } .header { background: linear-gradient(135deg, rgba(59, 130, 246, 0.15) 0%, rgba(139, 92, 246, 0.15) 100%); border-bottom: 1px solid rgba(99, 102, 241, 0.3); color: white; padding: 24px 32px; } .header h1 { font-size: 26px; margin-bottom: 8px; background: linear-gradient(135deg, #60a5fa 0%, #a78bfa 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; font-weight: 700; } .header p { font-size: 14px; color: #94a3b8; } .container { padding: 28px; max-width: 1600px; margin: 0 auto; } .kpi-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; margin-bottom: 24px; } .kpi-card { background: rgba(15, 23, 42, 0.6); backdrop-filter: blur(10px); border: 1px solid rgba(99, 102, 241, 0.2); padding: 20px; border-radius: 12px; box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3); } .kpi-title { font-size: 13px; color: #94a3b8; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.5px; } .kpi-value { font-size: 32px; font-weight: 700; background: linear-gradient(135deg, #60a5fa 0%, #a78bfa 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 8px; } .kpi-growth { font-size: 13px; color: #10b981; } .chart-card { background: rgba(15, 23, 42, 0.6); backdrop-filter: blur(10px); border: 1px solid rgba(99, 102, 241, 0.2); padding: 24px; border-radius: 12px; margin-bottom: 24px; box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3); } .chart-card h3 { font-size: 16px; font-weight: 600; margin-bottom: 16px; color: #f1f5f9; } .bar-chart { display: flex; flex-direction: column; gap: 16px; } .bar-item { display: flex; align-items: center; gap: 12px; } .bar-label { width: 80px; font-size: 13px; color: #94a3b8; text-align: right; } .bar-track { flex: 1; height: 32px; background: rgba(30, 41, 59, 0.5); border-radius: 6px; overflow: hidden; position: relative; } .bar-fill { height: 100%; background: linear-gradient(90deg, #3b82f6, #8b5cf6); border-radius: 6px; transition: width 1s ease; display: flex; align-items: center; justify-content: flex-end; padding-right: 12px; } .bar-value { color: white; font-size: 13px; font-weight: 600; } .table-card { background: rgba(15, 23, 42, 0.6); backdrop-filter: blur(10px); border: 1px solid rgba(99, 102, 241, 0.2); padding: 24px; border-radius: 12px; box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3); } .table-card h3 { font-size: 16px; font-weight: 600; margin-bottom: 16px; color: #f1f5f9; } table { width: 100%; border-collapse: collapse; } th, td { padding: 14px 18px; text-align: left; border-bottom: 1px solid rgba(99, 102, 241, 0.1); } th { background: rgba(30, 41, 59, 0.5); font-weight: 600; font-size: 13px; color: #94a3b8; text-transform: uppercase; } td { font-size: 14px; color: #cbd5e1; } tr:hover td { background: rgba(59, 130, 246, 0.05); } .tag { display: inline-block; padding: 5px 14px; border-radius: 6px; font-size: 12px; font-weight: 600; } .tag.high { background: rgba(16, 185, 129, 0.15); color: #10b981; border: 1px solid rgba(16, 185, 129, 0.3); } .tag.medium { background: rgba(59, 130, 246, 0.15); color: #3b82f6; border: 1px solid rgba(59, 130, 246, 0.3); }
 
         /* AI助手浮窗按钮 */
         .ai-float-btn { position: fixed; bottom: 40px; right: 40px; width: 60px; height: 60px; background: linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%); border-radius: 50%; box-shadow: 0 4px 20px rgba(59, 130, 246, 0.4); cursor: pointer; z-index: 1000; display: flex; align-items: center; justify-content: center; transition: all 0.3s ease; animation: pulse 2s infinite; }
@@ -59,15 +59,43 @@
         <p>RWS真实世界研究 · 临床试验匹配 · 研发ROI分析</p>
     </div>
     <div class="container">
-        <div class="kpi-grid"><div class="kpi-card"><div class="kpi-title">RWS项目数</div><div class="kpi-value">15个</div><div class="kpi-growth">进行中</div></div><div class="kpi-card"><div class="kpi-title">样本量</div><div class="kpi-value">8,050</div><div class="kpi-growth">+1200</div></div><div class="kpi-card"><div class="kpi-title">平均ROI</div><div class="kpi-value">6.8倍</div><div class="kpi-growth">↑ 25%</div></div><div class="kpi-card"><div class="kpi-title">研发周期</div><div class="kpi-value">18个月</div><div class="kpi-growth">优化中</div></div></div>
+        <div class="kpi-grid"><div class="kpi-card"><div class="kpi-title">研发项目数</div><div class="kpi-value">35个</div><div class="kpi-growth">进行中</div></div><div class="kpi-card"><div class="kpi-title">试验进度</div><div class="kpi-value">78.5%</div><div class="kpi-growth">平均进度</div></div><div class="kpi-card"><div class="kpi-title">专利数</div><div class="kpi-value">128项</div><div class="kpi-growth">↑ 15</div></div><div class="kpi-card"><div class="kpi-title">文献数</div><div class="kpi-value">856篇</div><div class="kpi-growth">↑ 42</div></div></div>
         <div class="chart-card">
-            <h3>📊 数据概览</h3>
-            <div style="padding: 60px; text-align: center; color: #64748b;">
-                <p style="font-size: 18px; margin-bottom: 12px;">研发支持模块数据展示</p>
-                <p style="font-size: 14px;">数据已预加载并可视化展示</p>
+            <h3>📊 试验阶段分布</h3>
+            <div class="bar-chart">
+                <div class="bar-item"><div class="bar-label">临床前</div><div class="bar-track"><div class="bar-fill" style="width: 75%;"><span class="bar-value">8个项目</span></div></div></div>
+                <div class="bar-item"><div class="bar-label">I期</div><div class="bar-track"><div class="bar-fill" style="width: 48%;"><span class="bar-value">5个项目</span></div></div></div>
+                <div class="bar-item"><div class="bar-label">II期</div><div class="bar-track"><div class="bar-fill" style="width: 65%;"><span class="bar-value">7个项目</span></div></div></div>
+                <div class="bar-item"><div class="bar-label">III期</div><div class="bar-track"><div class="bar-fill" style="width: 82%;"><span class="bar-value">9个项目</span></div></div></div>
+                <div class="bar-item"><div class="bar-label">上市申报</div><div class="bar-track"><div class="bar-fill" style="width: 38%;"><span class="bar-value">4个项目</span></div></div></div>
+                <div class="bar-item"><div class="bar-label">RWS研究</div><div class="bar-track"><div class="bar-fill" style="width: 28%;"><span class="bar-value">2个项目</span></div></div></div>
             </div>
         </div>
-        <div class="table-card"><h3>重点RWS研究项目</h3><table><thead><tr><th>研究名称</th><th>适应症</th><th>样本量</th><th>研究周期</th><th>进展</th></tr></thead><tbody><tr><td>抗PD-1单抗RWS</td><td>非小细胞肺癌</td><td>2850</td><td>24个月</td><td><span class="tag high">进行中</span></td></tr><tr><td>GLP-1激动剂RWS</td><td>2型糖尿病</td><td>5200</td><td>18个月</td><td><span class="tag high">完成</span></td></tr></tbody></table></div>
+        <div class="chart-card">
+            <h3>📈 研发投入趋势 (近6个月)</h3>
+            <div class="bar-chart">
+                <div class="bar-item"><div class="bar-label">7月</div><div class="bar-track"><div class="bar-fill" style="width: 72%;"><span class="bar-value">3.6亿元</span></div></div></div>
+                <div class="bar-item"><div class="bar-label">8月</div><div class="bar-track"><div class="bar-fill" style="width: 75%;"><span class="bar-value">3.8亿元</span></div></div></div>
+                <div class="bar-item"><div class="bar-label">9月</div><div class="bar-track"><div class="bar-fill" style="width: 80%;"><span class="bar-value">4.0亿元</span></div></div></div>
+                <div class="bar-item"><div class="bar-label">10月</div><div class="bar-track"><div class="bar-fill" style="width: 84%;"><span class="bar-value">4.2亿元</span></div></div></div>
+                <div class="bar-item"><div class="bar-label">11月</div><div class="bar-track"><div class="bar-fill" style="width: 88%;"><span class="bar-value">4.4亿元</span></div></div></div>
+                <div class="bar-item"><div class="bar-label">12月</div><div class="bar-track"><div class="bar-fill" style="width: 92%;"><span class="bar-value">4.6亿元</span></div></div></div>
+            </div>
+        </div>
+        <div class="table-card">
+            <h3>🔬 研发项目表</h3>
+            <table>
+                <thead><tr><th>项目名称</th><th>药物类型</th><th>适应症</th><th>试验阶段</th><th>预计完成</th><th>研发投入</th><th>状态</th></tr></thead>
+                <tbody>
+                    <tr><td>抗PD-1单抗</td><td>生物药</td><td>非小细胞肺癌</td><td>III期</td><td>2025年6月</td><td>8.5亿元</td><td><span class="tag high">进行中</span></td></tr>
+                    <tr><td>GLP-1/GIP双激动剂</td><td>生物药</td><td>2型糖尿病</td><td>III期</td><td>2025年9月</td><td>6.2亿元</td><td><span class="tag high">进行中</span></td></tr>
+                    <tr><td>SGLT-2抑制剂</td><td>小分子药</td><td>心力衰竭</td><td>II期</td><td>2025年3月</td><td>3.8亿元</td><td><span class="tag medium">进行中</span></td></tr>
+                    <tr><td>PCSK9单抗</td><td>生物药</td><td>高胆固醇血症</td><td>III期</td><td>2025年12月</td><td>5.5亿元</td><td><span class="tag high">进行中</span></td></tr>
+                    <tr><td>JAK抑制剂</td><td>小分子药</td><td>类风湿关节炎</td><td>上市申报</td><td>2025年2月</td><td>4.2亿元</td><td><span class="tag medium">申报中</span></td></tr>
+                    <tr><td>CDK4/6抑制剂</td><td>小分子药</td><td>乳腺癌</td><td>II期</td><td>2025年8月</td><td>2.8亿元</td><td><span class="tag medium">进行中</span></td></tr>
+                </tbody>
+            </table>
+        </div>
     </div>
     <script>window.addEventListener('load', function() { var token = localStorage.getItem('token'); if (!token) { window.location.href = window.location.pathname.replace('rwa.html', 'login-simple.html'); return; } var userInfo = localStorage.getItem('userInfo'); if (userInfo) { try { var user = JSON.parse(userInfo); document.getElementById('userName').textContent = user.name || user.username || '管理员'; } catch (e) {} } }); function logout() { localStorage.removeItem('token'); localStorage.removeItem('userInfo'); window.location.href = window.location.pathname.replace('rwa.html', 'login-simple.html'); }
 
@@ -102,16 +130,143 @@
             input.value = '';
 
             setTimeout(() => {
-                const responses = [
-                    '好的，让我为您分析这个数据...',
-                    '根据历史数据分析，我发现了以下趋势...',
-                    '正在生成报告，请稍候...',
-                    '这是一个很好的问题！让我来帮您解答...',
-                    '基于您的需求，我建议关注以下几个方面...'
-                ];
-                const randomResponse = responses[Math.floor(Math.random() * responses.length)];
-                addMessage(randomResponse, 'ai');
+                let response = '';
+
+                if (message.includes('研发') || message.includes('项目')) {
+                    response = `🔬 <strong>研发项目分析报告</strong><br><br>
+                    <strong>研发项目概况：</strong><br>
+                    • 总项目数：35个<br>
+                    • 平均进度：78.5%<br>
+                    • 总投入：24.6亿元<br><br>
+                    <strong>阶段分布：</strong><br>
+                    • 临床前：8个（22.9%）<br>
+                    • I期：5个（14.3%）<br>
+                    • II期：7个（20.0%）<br>
+                    • III期：9个（25.7%）<br>
+                    • 上市申报：4个（11.4%）<br>
+                    • RWS研究：2个（5.7%）<br><br>
+                    <strong>重点：</strong>III期项目最多，进展顺利。`;
+                } else if (message.includes('报告') || message.includes('生成')) {
+                    response = `📊 <strong>研发决策月度报告</strong><br><br>
+                    <strong>一、研发概况</strong><br>
+                    • 研发项目：35个<br>
+                    • 平均进度：78.5%<br>
+                    • 专利数量：128项（↑15）<br>
+                    • 文献数量：856篇（↑42）<br><br>
+                    <strong>二、投入趋势</strong><br>
+                    • 7月：3.6亿元<br>
+                    • 8月：3.8亿元<br>
+                    • 9月：4.0亿元<br>
+                    • 10月：4.2亿元<br>
+                    • 11月：4.4亿元<br>
+                    • 12月：4.6亿元<br><br>
+                    <strong>三、重点项目</strong><br>
+                    • 抗PD-1单抗：III期，85%<br>
+                    • GLP-1/GIP双激动剂：III期，92%<br>
+                    • PCSK9单抗：III期，78%<br><br>
+                    <strong>四、建议</strong><br>
+                    1. 加快III期项目进度<br>
+                    2. 增加专利布局<br>
+                    3. 优化研发投入结构`;
+                } else if (message.includes('阶段') || message.includes('进度')) {
+                    response = `📊 <strong>试验阶段分布</strong><br><br>
+                    <strong>各阶段项目数：</strong><br><br>
+                    1. <strong>III期</strong>：9个（25.7%）<br>
+                    • 占比最大<br>
+                    • 关键阶段<br>
+                    • 成功率关注<br><br>
+                    2. <strong>II期</strong>：7个（20.0%）<br>
+                    • 中期阶段<br>
+                    • 效果验证<br><br>
+                    3. <strong>临床前</strong>：8个（22.9%）<br>
+                    • 早期阶段<br>
+                    • 储备项目<br><br>
+                    4. <strong>I期</strong>：5个（14.3%）<br>
+                    • 初始阶段<br>
+                    • 安全性评估<br><br>
+                    5. <strong>上市申报</strong>：4个（11.4%）<br>
+                    • 即将上市<br>
+                    • 商业化准备<br><br>
+                    6. <strong>RWS研究</strong>：2个（5.7%）<br>
+                    • 真实世界研究<br>
+                    • 上市后研究`;
+                } else if (message.includes('投入') || message.includes('资金')) {
+                    response = `💰 <strong>研发投入分析</strong><br><br>
+                    <strong>近6个月投入趋势：</strong><br><br>
+                    • 7月：3.6亿元<br>
+                    • 8月：3.8亿元（↑5.6%）<br>
+                    • 9月：4.0亿元（↑5.3%）<br>
+                    • 10月：4.2亿元（↑5.0%）<br>
+                    • 11月：4.4亿元（↑4.8%）<br>
+                    • 12月：4.6亿元（↑4.5%）<br><br>
+                    <strong>投入分析：</strong><br>
+                    • 月均投入：4.1亿元<br>
+                    • 月均增长：5.0%<br>
+                    • 6个月总计：24.6亿元<br>
+                    • 增长态势：稳定<br><br>
+                    <strong>结论：</strong>研发投入持续增长，保持高强度投入。`;
+                } else if (message.includes('重点') || message.includes('核心')) {
+                    response = `🎯 <strong>重点研发项目</strong><br><br>
+                    <strong>TOP6核心项目：</strong><br><br>
+                    1. <strong>抗PD-1单抗</strong><br>
+                    • 类型：生物药<br>
+                    • 适应症：非小细胞肺癌<br>
+                    • 阶段：III期<br>
+                    • 进度：85%<br>
+                    • 投入：8.5亿元<br><br>
+                    2. <strong>GLP-1/GIP双激动剂</strong><br>
+                    • 类型：生物药<br>
+                    • 适应症：2型糖尿病<br>
+                    • 阶段：III期<br>
+                    • 进度：92%<br>
+                    • 投入：6.2亿元<br><br>
+                    3. <strong>PCSK9单抗</strong><br>
+                    • 类型：生物药<br>
+                    • 适应症：高胆固醇血症<br>
+                    • 阶段：III期<br>
+                    • 进度：78%<br>
+                    • 投入：5.5亿元<br><br>
+                    4-6名：SGLT-2抑制剂、JAK抑制剂、CDK4/6抑制剂<br><br>
+                    <strong>总投入：</strong>31亿元`;
+                } else if (message.includes('策略') || message.includes('优化')) {
+                    response = `💡 <strong>研发优化建议</strong><br><br>
+                    <strong>当前优势：</strong><br>
+                    ✅ 项目数量充足：35个<br>
+                    ✅ 研发投入稳定：4.6亿/月<br>
+                    ✅ 专利成果丰富：128项<br><br>
+                    <strong>优化方向：</strong><br><br>
+                    1. <strong>项目优化</strong><br>
+                    • 加快III期项目进度<br>
+                    • 优先推进高价值项目<br>
+                    • 及时终止低效项目<br><br>
+                    2. <strong>投入优化</strong><br>
+                    • 聚焦核心项目<br>
+                    • 优化资源配置<br>
+                    • 提升投入产出比<br><br>
+                    3. <strong>成果转化</strong><br>
+                    • 加快专利布局<br>
+                    • 促进成果转化<br>
+                    • 加强学术推广<br><br>
+                    <strong>目标：</strong>提升研发效率和成功率`;
+                } else {
+                    response = getGenericResponse('研发支持');
+                }
+
+                addMessage(response, 'ai');
             }, 1000);
+        }
+
+        function getGenericResponse(pageName) {
+            return `我是${pageName}页面的AI助手，可以帮您：<br><br>
+            🔬 <strong>研发项目</strong><br>
+            分析研发项目进展<br><br>
+            📊 <strong>试验阶段</strong><br>
+            查看各阶段分布<br><br>
+            💰 <strong>研发投入</strong><br>
+            分析投入趋势<br><br>
+            💡 <strong>优化建议</strong><br>
+            提供研发改进方案<br><br>
+            请告诉我您想了解什么？`;
         }
 
         function sendQuickMessage(message) {
@@ -227,10 +382,10 @@
                 </div>
             </div>
             <div class="ai-quick-actions">
-                <div class="ai-quick-action" onclick="sendQuickMessage('帮我分析销售趋势')">📈 分析销售趋势</div>
-                <div class="ai-quick-action" onclick="sendQuickMessage('生成月度报告')">📄 生成月度报告</div>
-                <div class="ai-quick-action" onclick="sendQuickMessage('竞品对比分析')">🔍 竞品对比</div>
-                <div class="ai-quick-action" onclick="sendQuickMessage('客户细分建议')">👥 客户细分</div>
+                <div class="ai-quick-action" onclick="sendQuickMessage('研发项目分析')">🔬 研发项目</div>
+                <div class="ai-quick-action" onclick="sendQuickMessage('生成月度报告')">📄 生成报告</div>
+                <div class="ai-quick-action" onclick="sendQuickMessage('试验阶段分布')">📊 阶段分布</div>
+                <div class="ai-quick-action" onclick="sendQuickMessage('研发投入分析')">💰 研发投入</div>
             </div>
         </div>
         <div class="ai-window-input">

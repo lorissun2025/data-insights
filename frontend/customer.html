@@ -242,16 +242,122 @@
             input.value = '';
 
             setTimeout(() => {
-                const responses = [
-                    '好的，让我为您分析这个数据...',
-                    '根据历史数据分析，我发现了以下趋势...',
-                    '正在生成报告，请稍候...',
-                    '这是一个很好的问题！让我来帮您解答...',
-                    '基于您的需求，我建议关注以下几个方面...'
-                ];
-                const randomResponse = responses[Math.floor(Math.random() * responses.length)];
-                addMessage(randomResponse, 'ai');
+                let response = '';
+
+                if (message.includes('客户') || message.includes('分层')) {
+                    response = `👥 <strong>客户分层分析报告</strong><br><br>
+                    <strong>客户分层结构：</strong><br><br>
+                    1. <strong>核心客户</strong>（5家）<br>
+                    • 采购额占比：85%<br>
+                    • 平均采购额：3,516万元/家<br>
+                    • 代表客户：杭州市第一医院、深圳市人民医院<br><br>
+                    2. <strong>重要客户</strong>（12家）<br>
+                    • 采购额占比：10%<br>
+                    • 平均采购额：250万元/家<br>
+                    • 成长空间：大<br><br>
+                    3. <strong>一般客户</strong>（28家）<br>
+                    • 采购额占比：5%<br>
+                    • 平均采购额：50万元/家<br>
+                    • 需要培育<br><br>
+                    <strong>建议：</strong>重点维护核心客户，提升重要客户占比。`;
+                } else if (message.includes('报告') || message.includes('生成')) {
+                    response = `📊 <strong>客户洞察月度报告</strong><br><br>
+                    <strong>一、客户概况</strong><br>
+                    • 总客户数：45家<br>
+                    • 核心客户：5家（11%）<br>
+                    • 重要客户：12家（27%）<br>
+                    • 一般客户：28家（62%）<br><br>
+                    <strong>二、重点客户TOP5</strong><br>
+                    1. 杭州市第一医院：5,280万元<br>
+                    2. 深圳市人民医院：4,850万元<br>
+                    3. 上海市瑞金医院：4,520万元<br>
+                    4. 成都市华西医院：3,980万元<br>
+                    5. 广州市中山医院：3,450万元<br><br>
+                    <strong>三、地区分布</strong><br>
+                    • 浙江：1家核心客户<br>
+                    • 广东：2家核心客户<br>
+                    • 上海：1家核心客户<br>
+                    • 四川：1家重要客户<br><br>
+                    <strong>四、建议</strong><br>
+                    1. 深化核心客户关系<br>
+                    2. 提升重要客户等级<br>
+                    3. 拓展新客户资源`;
+                } else if (message.includes('医院') || message.includes('名单')) {
+                    response = `🏥 <strong>重点医院客户分析</strong><br><br>
+                    <strong>核心客户特征：</strong><br><br>
+                    1. <strong>杭州市第一医院</strong><br>
+                    • 等级：三甲<br>
+                    • 采购：156次<br>
+                    • 金额：5,280万元<br>
+                    • 省份：浙江<br><br>
+                    2. <strong>深圳市人民医院</strong><br>
+                    • 等级：三甲<br>
+                    • 采购：142次<br>
+                    • 金额：4,850万元<br>
+                    • 省份：广东<br><br>
+                    3. <strong>上海市瑞金医院</strong><br>
+                    • 等级：三甲<br>
+                    • 采购：128次<br>
+                    • 金额：4,520万元<br>
+                    • 省份：上海<br><br>
+                    <strong>共性特征：</strong><br>
+                    ✅ 均为三甲医院<br>
+                    ✅ 采购频次高<br>
+                    ✅ 采购金额大<br>
+                    ✅ 分布在经济发达地区`;
+                } else if (message.includes('策略') || message.includes('建议')) {
+                    response = `💡 <strong>客户策略建议</strong><br><br>
+                    <strong>核心客户维护策略：</strong><br>
+                    ✅ 专人对接服务<br>
+                    ✅ 定期拜访沟通<br>
+                    ✅ 优先供货保障<br>
+                    ✅ 个性化解决方案<br><br>
+                    <strong>重要客户提升策略：</strong><br>
+                    ✅ 增加采购频次<br>
+                    ✅ 拓展产品线<br>
+                    ✅ 提供专业培训<br>
+                    ✅ 优化服务体验<br><br>
+                    <strong>一般客户培育策略：</strong><br>
+                    ✅ 了解客户需求<br>
+                    ✅ 提供试用机会<br>
+                    ✅ 建立初步合作<br>
+                    ✅ 逐步提升份额`;
+                } else if (message.includes('增长') || message.includes('潜力')) {
+                    response = `📈 <strong>客户增长潜力分析</strong><br><br>
+                    <strong>高潜力客户：</strong><br><br>
+                    1. <strong>成都市华西医院</strong><br>
+                    • 当前等级：重要客户<br>
+                    • 采购金额：3,980万元<br>
+                    • 增长潜力：高<br>
+                    • 提升空间：可晋升核心客户<br><br>
+                    2. <strong>广州市中山医院</strong><br>
+                    • 当前等级：重要客户<br>
+                    • 采购金额：3,450万元<br>
+                    • 增长潜力：高<br>
+                    • 提升空间：增加产品线<br><br>
+                    <strong>策略：</strong><br>
+                    ✅ 重点关注潜力客户<br>
+                    ✅ 加大资源投入<br>
+                    ✅ 制定专项提升计划`;
+                } else {
+                    response = getGenericResponse('客户洞察');
+                }
+
+                addMessage(response, 'ai');
             }, 1000);
+        }
+
+        function getGenericResponse(pageName) {
+            return `我是${pageName}页面的AI助手，可以帮您：<br><br>
+            👥 <strong>客户分层</strong><br>
+            分析客户结构和分层<br><br>
+            🏥 <strong>医院分析</strong><br>
+            深度了解重点医院客户<br><br>
+            📊 <strong>客户报告</strong><br>
+            生成客户分析报告<br><br>
+            💡 <strong>策略建议</strong><br>
+            提供客户管理策略<br><br>
+            请告诉我您想了解什么？`;
         }
 
         function sendQuickMessage(message) {
@@ -368,10 +474,10 @@
                 </div>
             </div>
             <div class="ai-quick-actions">
-                <div class="ai-quick-action" onclick="sendQuickMessage('帮我分析销售趋势')">📈 分析销售趋势</div>
-                <div class="ai-quick-action" onclick="sendQuickMessage('生成月度报告')">📄 生成月度报告</div>
-                <div class="ai-quick-action" onclick="sendQuickMessage('竞品对比分析')">🔍 竞品对比</div>
-                <div class="ai-quick-action" onclick="sendQuickMessage('客户细分建议')">👥 客户细分</div>
+                <div class="ai-quick-action" onclick="sendQuickMessage('客户分层分析')">👥 客户分层</div>
+                <div class="ai-quick-action" onclick="sendQuickMessage('生成月度报告')">📄 生成报告</div>
+                <div class="ai-quick-action" onclick="sendQuickMessage('重点医院客户分析')">🏥 医院分析</div>
+                <div class="ai-quick-action" onclick="sendQuickMessage('客户策略建议')">💡 策略建议</div>
             </div>
         </div>
         <div class="ai-window-input">

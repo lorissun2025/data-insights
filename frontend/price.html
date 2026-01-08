@@ -114,16 +114,117 @@
             input.value = '';
 
             setTimeout(() => {
-                const responses = [
-                    '好的，让我为您分析这个数据...',
-                    '根据历史数据分析，我发现了以下趋势...',
-                    '正在生成报告，请稍候...',
-                    '这是一个很好的问题！让我来帮您解答...',
-                    '基于您的需求，我建议关注以下几个方面...'
-                ];
-                const randomResponse = responses[Math.floor(Math.random() * responses.length)];
-                addMessage(randomResponse, 'ai');
+                let response = '';
+
+                if (message.includes('价格') || message.includes('对比')) {
+                    response = `💰 <strong>价格对比分析报告</strong><br><br>
+                    <strong>市场价格对比：</strong><br><br>
+                    1. <strong>本公司</strong>：28.5元<br>
+                    • 定位：中等偏下<br>
+                    • 优势：性价比高<br><br>
+                    2. <strong>竞品A</strong>：32.0元<br>
+                    • 定位：高端<br>
+                    • 溢价：+12.3%<br><br>
+                    3. <strong>竞品B</strong>：25.8元<br>
+                    • 定位：低端<br>
+                    • 差价：-9.5%<br><br>
+                    4. <strong>竞品C</strong>：29.2元<br>
+                    • 定位：中等<br>
+                    • 差价：+2.5%<br><br>
+                    <strong>结论：</strong>本公司定价合理，具备竞争力。`;
+                } else if (message.includes('报告') || message.includes('生成')) {
+                    response = `📊 <strong>价格分析月度报告</strong><br><br>
+                    <strong>一、价格定位</strong><br>
+                    • 本公司价格：28.5元<br>
+                    • 市场平均：29.0元<br>
+                    • 低于均价：1.7%<br>
+                    • 竞争力：良好<br><br>
+                    <strong>二、价格弹性</strong><br>
+                    • 阿莫西林：-1.25（富有弹性）<br>
+                    • 布洛芬：-0.85（缺乏弹性）<br>
+                    • 奥美拉唑：-1.42（富有弹性）<br><br>
+                    <strong>三、价格策略</strong><br>
+                    ✅ 保持适中定价<br>
+                    ✅ 适度促销策略<br>
+                    ✅ 避免恶性价格战<br><br>
+                    <strong>四、建议</strong><br>
+                    1. 关注竞品价格变动<br>
+                    2. 优化促销策略<br>
+                    3. 提升产品附加值`;
+                } else if (message.includes('弹性') || message.includes('敏感')) {
+                    response = `📊 <strong>价格弹性分析</strong><br><br>
+                    <strong>弹性系数解读：</strong><br><br>
+                    1. <strong>阿莫西林</strong>（-1.25）<br>
+                    • 富有弹性<br>
+                    • 含义：价格变动1%，需求变动1.25%<br>
+                    • 策略：谨慎调整价格<br>
+                    • 推荐：可适度降价促销<br><br>
+                    2. <strong>布洛芬</strong>（-0.85）<br>
+                    • 缺乏弹性<br>
+                    • 含义：价格变动1%，需求变动0.85%<br>
+                    • 策略：价格敏感度低<br>
+                    • 推荐：可适当提价<br><br>
+                    3. <strong>奥美拉唑</strong>（-1.42）<br>
+                    • 富有弹性<br>
+                    • 含义：价格变动1%，需求变动1.42%<br>
+                    • 策略：高度敏感<br>
+                    • 推荐：保持稳定价格`;
+                } else if (message.includes('策略') || message.includes('定价')) {
+                    response = `💡 <strong>定价策略建议</strong><br><br>
+                    <strong>当前定价分析：</strong><br>
+                    • 本公司：28.5元<br>
+                    • 低于市场平均：1.7%<br>
+                    • 性价比优势明显<br><br>
+                    <strong>定价策略：</strong><br><br>
+                    1. <strong>差异化定价</strong><br>
+                    ✅ 不同地区不同价格<br>
+                    ✅ 不同客户不同折扣<br>
+                    ✅ 不同规格不同定价<br><br>
+                    2. <strong>促销定价</strong><br>
+                    ✅ 限时折扣<br>
+                    ✅ 批量优惠<br>
+                    ✅ 组合套餐<br><br>
+                    3. <strong>价值定价</strong><br>
+                    ✅ 突出产品质量<br>
+                    ✅ 强调服务优势<br>
+                    ✅ 建立品牌溢价`;
+                } else if (message.includes('优化') || message.includes('调整')) {
+                    response = `🎯 <strong>价格优化建议</strong><br><br>
+                    <strong>价格调整空间：</strong><br><br>
+                    1. <strong>提价空间</strong><br>
+                    • 布洛芬：可提价3-5%<br>
+                    • 原因：缺乏弹性，需求稳定<br><br>
+                    2. <strong>降价空间</strong><br>
+                    • 阿莫西林：可降价促销<br>
+                    • 奥美拉唑：谨慎降价<br><br>
+                    <strong>优化方向：</strong><br>
+                    ✅ 建立动态定价机制<br>
+                    ✅ 实施区域差异化<br>
+                    ✅ 优化折扣结构<br>
+                    ✅ 加强价格监控<br><br>
+                    <strong>风险提示：</strong><br>
+                    ⚠️ 避免引发价格战<br>
+                    ⚠️ 关注竞品反应<br>
+                    ⚠️ 评估客户承受度`;
+                } else {
+                    response = getGenericResponse('价格分析');
+                }
+
+                addMessage(response, 'ai');
             }, 1000);
+        }
+
+        function getGenericResponse(pageName) {
+            return `我是${pageName}页面的AI助手，可以帮您：<br><br>
+            💰 <strong>价格对比</strong><br>
+            对比竞品价格差异<br><br>
+            📊 <strong>弹性分析</strong><br>
+            分析价格敏感度<br><br>
+            💡 <strong>定价策略</strong><br>
+            制定最优定价方案<br><br>
+            🎯 <strong>价格优化</strong><br>
+            提供价格调整建议<br><br>
+            请告诉我您想了解什么？`;
         }
 
         function sendQuickMessage(message) {
@@ -239,10 +340,10 @@
                 </div>
             </div>
             <div class="ai-quick-actions">
-                <div class="ai-quick-action" onclick="sendQuickMessage('帮我分析销售趋势')">📈 分析销售趋势</div>
-                <div class="ai-quick-action" onclick="sendQuickMessage('生成月度报告')">📄 生成月度报告</div>
-                <div class="ai-quick-action" onclick="sendQuickMessage('竞品对比分析')">🔍 竞品对比</div>
-                <div class="ai-quick-action" onclick="sendQuickMessage('客户细分建议')">👥 客户细分</div>
+                <div class="ai-quick-action" onclick="sendQuickMessage('价格对比分析')">💰 价格对比</div>
+                <div class="ai-quick-action" onclick="sendQuickMessage('生成月度报告')">📄 生成报告</div>
+                <div class="ai-quick-action" onclick="sendQuickMessage('价格弹性分析')">📊 弹性分析</div>
+                <div class="ai-quick-action" onclick="sendQuickMessage('定价策略建议')">💡 定价策略</div>
             </div>
         </div>
         <div class="ai-window-input">

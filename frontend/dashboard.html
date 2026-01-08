@@ -132,8 +132,8 @@
             <div class="ai-quick-actions">
                 <div class="ai-quick-action" onclick="sendQuickMessage('帮我分析销售趋势')">📈 分析销售趋势</div>
                 <div class="ai-quick-action" onclick="sendQuickMessage('生成月度报告')">📄 生成月度报告</div>
-                <div class="ai-quick-action" onclick="sendQuickMessage('竞品对比分析')">🔍 竞品对比</div>
-                <div class="ai-quick-action" onclick="sendQuickMessage('客户细分建议')">👥 客户细分</div>
+                <div class="ai-quick-action" onclick="sendQuickMessage('市场机会分析')">🎯 市场机会</div>
+                <div class="ai-quick-action" onclick="sendQuickMessage('客户洞察分析')">👥 客户洞察</div>
             </div>
         </div>
         <div class="ai-window-input">
@@ -175,16 +175,90 @@
             input.value = '';
 
             setTimeout(() => {
-                const responses = [
-                    '好的，让我为您分析这个数据...',
-                    '根据历史数据分析，我发现了以下趋势...',
-                    '正在生成报告，请稍候...',
-                    '这是一个很好的问题！让我来帮您解答...',
-                    '基于您的需求，我建议关注以下几个方面...'
-                ];
-                const randomResponse = responses[Math.floor(Math.random() * responses.length)];
-                addMessage(randomResponse, 'ai');
+                let response = '';
+
+                if (message.includes('销售') || message.includes('趋势')) {
+                    response = `📈 <strong>销售趋势分析报告</strong><br><br>
+                    根据当前数据显示：<br><br>
+                    • <strong>12月销售额</strong>：14,800万元，环比增长6.5%<br>
+                    • <strong>近12个月平均增长率</strong>：4.2%<br>
+                    • <strong>销售量</strong>：1,000万盒，增长3.8%<br>
+                    • <strong>市场份额</strong>：24.0%，提升2.1%<br><br>
+                    <strong>区域亮点：</strong><br>
+                    ✅ 华东地区：杭州市场增长28.5%（高潜力）<br>
+                    ✅ 华南地区：深圳市场增长32.1%（高潜力）<br>
+                    ✅ 西南地区：成都市场增长24.3%（增长稳定）<br><br>
+                    <strong>建议：</strong>重点关注杭州、深圳等高潜力市场，加大资源投入。`;
+                } else if (message.includes('报告') || message.includes('生成')) {
+                    response = `📊 <strong>月度市场洞察报告</strong><br><br>
+                    <strong>一、销售概况</strong><br>
+                    • 总销售额：14,800万元（↑4.2%）<br>
+                    • 销售量：1,000万盒（↑3.8%）<br>
+                    • 市场份额：24.0%（↑2.1%）<br>
+                    • 活跃客户：2,850家（↑8.5%）<br><br>
+                    <strong>二、市场机会</strong><br>
+                    • 杭州市场：4,450万元，增长28.5%<br>
+                    • 深圳市场：3,780万元，增长32.1%<br>
+                    • 成都市场：2,250万元，增长24.3%<br><br>
+                    <strong>三、行动建议</strong><br>
+                    1. 加大对高潜力城市的投入<br>
+                    2. 扩大客户基础，提升市场份额<br>
+                    3. 优化产品结构，提高客单价`;
+                } else if (message.includes('市场') || message.includes('机会')) {
+                    response = `🎯 <strong>市场机会分析</strong><br><br>
+                    <strong>高潜力市场识别：</strong><br><br>
+                    1. <strong>杭州市场</strong><br>
+                    • 当前规模：4,450万元<br>
+                    • 增长率：+28.5%<br>
+                    • 建议：增加销售团队，扩大覆盖<br><br>
+                    2. <strong>深圳市场</strong><br>
+                    • 当前规模：3,780万元<br>
+                    • 增长率：+32.1%<br>
+                    • 建议：重点投入，快速扩张<br><br>
+                    3. <strong>成都市场</strong><br>
+                    • 当前规模：2,250万元<br>
+                    • 增长率：+24.3%<br>
+                    • 建议：稳定增长，持续跟进`;
+                } else if (message.includes('预测') || message.includes('未来')) {
+                    response = `🔮 <strong>销售预测分析</strong><br><br>
+                    基于历史数据趋势分析：<br><br>
+                    • <strong>Q1预测</strong>：预计15,500万元，增长4.7%<br>
+                    • <strong>Q2预测</strong>：预计16,200万元，增长4.5%<br>
+                    • <strong>全年预测</strong>：预计突破18亿元<br><br>
+                    <strong>增长驱动因素：</strong><br>
+                    ✅ 新市场持续开拓<br>
+                    ✅ 客户满意度提升<br>
+                    ✅ 产品竞争力增强`;
+                } else if (message.includes('客户') || message.includes('用户')) {
+                    response = `👥 <strong>客户洞察分析</strong><br><br>
+                    <strong>客户概况：</strong><br>
+                    • 活跃客户数：2,850家<br>
+                    • 增长率：+8.5%<br>
+                    • 平均客单价：5.19万元<br><br>
+                    <strong>客户分布：</strong><br>
+                    • 三甲医院：占比85%<br>
+                    • 二甲医院：占比12%<br>
+                    • 基层医疗机构：占比3%<br><br>
+                    <strong>建议：</strong>加强客户关系管理，提升复购率`;
+                } else {
+                    response = getGenericResponse('市场洞察');
+                }
+
+                addMessage(response, 'ai');
             }, 1000);
+        }
+
+        function getGenericResponse(pageName) {
+            return `我是${pageName}页面的AI助手，可以帮您：<br><br>
+            📊 <strong>数据分析</strong><br>
+            分析销售趋势、市场份额等核心指标<br><br>
+            📈 <strong>趋势预测</strong><br>
+            基于历史数据预测未来走向<br><br>
+            🎯 <strong>机会识别</strong><br>
+            发现高潜力市场和增长点<br><br>
+            📄 <strong>报告生成</strong><br>
+            生成详细的数据分析报告<br><br>
+            请告诉我您想了解什么？`;
         }
 
         function sendQuickMessage(message) {

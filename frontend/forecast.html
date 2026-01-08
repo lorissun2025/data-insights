@@ -114,16 +114,112 @@
             input.value = '';
 
             setTimeout(() => {
-                const responses = [
-                    '好的，让我为您分析这个数据...',
-                    '根据历史数据分析，我发现了以下趋势...',
-                    '正在生成报告，请稍候...',
-                    '这是一个很好的问题！让我来帮您解答...',
-                    '基于您的需求，我建议关注以下几个方面...'
-                ];
-                const randomResponse = responses[Math.floor(Math.random() * responses.length)];
-                addMessage(randomResponse, 'ai');
+                let response = '';
+
+                if (message.includes('预测') || message.includes('趋势')) {
+                    response = `📈 <strong>销售预测分析</strong><br><br>
+                    <strong>未来6个月销售预测：</strong><br><br>
+                    • <strong>1月</strong>：15,200万元（预测）<br>
+                    • <strong>2月</strong>：15,600万元（预测）<br>
+                    • <strong>3月</strong>：16,100万元（预测）<br>
+                    • <strong>4月</strong>：16,500万元（预测）<br>
+                    • <strong>5月</strong>：17,000万元（预测）<br>
+                    • <strong>6月</strong>：17,500万元（预测）<br><br>
+                    <strong>预测依据：</strong><br>
+                    ✅ 历史增长率：平均4.2%/月<br>
+                    ✅ 季节性因素：Q1通常为旺季<br>
+                    ✅ 市场扩张：新区域持续贡献<br><br>
+                    <strong>置信度：</strong>85%（基于LSTM模型）`;
+                } else if (message.includes('报告') || message.includes('生成')) {
+                    response = `📊 <strong>销售预测月度报告</strong><br><br>
+                    <strong>一、历史表现</strong><br>
+                    • 当前销售：14,800万元<br>
+                    • 增长趋势：稳定上升<br>
+                    • 去年同期：12,500万元<br><br>
+                    <strong>二、预测模型</strong><br>
+                    • <strong>最佳模型</strong>：LSTM<br>
+                    • MAPE：5.2%（优秀）<br>
+                    • RMSE：458<br>
+                    • 准确率：94.8%<br><br>
+                    <strong>三、未来展望</strong><br>
+                    • Q1预测：47,300万元<br>
+                    • Q2预测：51,000万元<br>
+                    • 上半年总计：98,300万元<br><br>
+                    <strong>四、风险提示</strong><br>
+                    ⚠️ 市场竞争加剧可能影响增长率<br>
+                    ⚠️ 需关注政策变化影响`;
+                } else if (message.includes('模型') || message.includes('准确')) {
+                    response = `🤖 <strong>预测模型评估</strong><br><br>
+                    <strong>模型对比：</strong><br><br>
+                    1. <strong>LSTM</strong>（推荐使用）<br>
+                    • MAPE：5.2% ✅<br>
+                    • RMSE：458 ✅<br>
+                    • 适用场景：中长期预测<br>
+                    • 准确率：94.8%<br><br>
+                    2. <strong>XGBoost</strong>（可用）<br>
+                    • MAPE：6.8%<br>
+                    • RMSE：525<br>
+                    • 适用场景：短期预测<br>
+                    • 准确率：93.2%<br><br>
+                    3. <strong>ARIMA</strong>（一般）<br>
+                    • MAPE：8.5%<br>
+                    • RMSE：682<br>
+                    • 适用场景：线性趋势<br>
+                    • 准确率：91.5%<br><br>
+                    <strong>建议：</strong>采用LSTM模型进行主要预测。`;
+                } else if (message.includes('准确度') || message.includes('误差')) {
+                    response = `📊 <strong>预测准确度分析</strong><br><br>
+                    <strong>LSTM模型表现：</strong><br><br>
+                    • MAPE：5.2%<br>
+                      （平均绝对百分比误差，越小越好）<br><br>
+                    • RMSE：458<br>
+                      （均方根误差，单位：万元）<br><br>
+                    <strong>准确度评估：</strong><br>
+                    ✅ 优秀（MAPE < 10%）<br>
+                    ✅ 预测可靠度高<br>
+                    ✅ 适合业务决策<br><br>
+                    <strong>实际vs预测对比：</strong><br>
+                    • 12月实际：14,800万元<br>
+                    • 12月预测：14,650万元<br>
+                    • 误差：+150万元（1.01%）<br>
+                    • 结论：预测非常准确`;
+                } else if (message.includes('建议') || message.includes('优化')) {
+                    response = `💡 <strong>预测优化建议</strong><br><br>
+                    <strong>当前问题：</strong><br>
+                    • 模型准确度已达94.8%<br>
+                    • 但仍有提升空间<br><br>
+                    <strong>优化方向：</strong><br><br>
+                    1. <strong>数据维度增强</strong><br>
+                    ✅ 加入宏观经济指标<br>
+                    ✅ 加入竞品数据<br>
+                    ✅ 加入政策变化因素<br><br>
+                    2. <strong>模型优化</strong><br>
+                    ✅ 尝试集成学习（Ensemble）<br>
+                    ✅ 结合多个模型优势<br>
+                    ✅ 动态调整模型参数<br><br>
+                    3. <strong>应用优化</strong><br>
+                    ✅ 建立预警机制<br>
+                    ✅ 实时更新预测<br>
+                    ✅ 人工+AI结合判断`;
+                } else {
+                    response = getGenericResponse('销售预测');
+                }
+
+                addMessage(response, 'ai');
             }, 1000);
+        }
+
+        function getGenericResponse(pageName) {
+            return `我是${pageName}页面的AI助手，可以帮您：<br><br>
+            📈 <strong>销售预测</strong><br>
+            基于AI模型预测未来销售<br><br>
+            📊 <strong>模型评估</strong><br>
+            对比不同预测模型准确度<br><br>
+            🎯 <strong>趋势分析</strong><br>
+            识别长期增长趋势<br><br>
+            💡 <strong>优化建议</strong><br>
+            提升预测准确度的方法<br><br>
+            请告诉我您想了解什么？`;
         }
 
         function sendQuickMessage(message) {
@@ -239,10 +335,10 @@
                 </div>
             </div>
             <div class="ai-quick-actions">
-                <div class="ai-quick-action" onclick="sendQuickMessage('帮我分析销售趋势')">📈 分析销售趋势</div>
-                <div class="ai-quick-action" onclick="sendQuickMessage('生成月度报告')">📄 生成月度报告</div>
-                <div class="ai-quick-action" onclick="sendQuickMessage('竞品对比分析')">🔍 竞品对比</div>
-                <div class="ai-quick-action" onclick="sendQuickMessage('客户细分建议')">👥 客户细分</div>
+                <div class="ai-quick-action" onclick="sendQuickMessage('销售预测分析')">📈 销售预测</div>
+                <div class="ai-quick-action" onclick="sendQuickMessage('生成月度报告')">📄 生成报告</div>
+                <div class="ai-quick-action" onclick="sendQuickMessage('预测模型评估')">🤖 模型评估</div>
+                <div class="ai-quick-action" onclick="sendQuickMessage('预测优化建议')">💡 优化建议</div>
             </div>
         </div>
         <div class="ai-window-input">
